@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>앤트로픽 vs 바츠 — AI 학습과 공정이용</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#0F1420; --panel:#161C2B; --panel2:#1C2436; --line:#2A3245;
+  --ink:#E8ECF4; --muted:#AEB7C7; --dim:#7D879A;
+  --red:#FF6B6B; --green:#4FD1A5; --amber:#F5B84B; --blue:#6EA8FE; --violet:#B69CFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{position:relative;width:1920px;height:1080px;flex:none;transform-origin:center center}
+.slide{position:absolute;inset:0;padding:96px 120px 110px;display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transition:opacity .35s ease}
+.slide.active{opacity:1;visibility:visible}
+.kicker{font-size:26px;font-weight:600;color:var(--amber);letter-spacing:.04em;margin-bottom:14px}
+h1{font-size:96px;font-weight:800;line-height:1.12;letter-spacing:-.02em}
+h2{font-size:60px;font-weight:800;line-height:1.2;letter-spacing:-.015em;margin-bottom:18px}
+.lead{font-size:32px;color:var(--muted);line-height:1.5;max-width:1560px}
+.lead b{color:var(--ink)}
+.body{flex:1;display:flex;gap:48px;margin-top:40px;min-height:0}
+.col{flex:1;display:flex;flex-direction:column;gap:22px;min-width:0}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:20px;padding:30px 34px}
+.card h3{font-size:34px;font-weight:700;margin-bottom:12px}
+.card p,.card li{font-size:26px;line-height:1.5;color:var(--muted)}
+.card p b,.card li b{color:var(--ink)}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.card li::before{content:"·";color:var(--amber);font-weight:800;margin-right:12px}
+.red{color:var(--red)!important}.green{color:var(--green)!important}.amber{color:var(--amber)!important}.blue{color:var(--blue)!important}
+.b-red{border-color:var(--red)}.b-green{border-color:var(--green)}.b-amber{border-color:var(--amber)}.b-blue{border-color:var(--blue)}
+.t-red{background:rgba(255,107,107,.08)}.t-green{background:rgba(79,209,165,.08)}.t-amber{background:rgba(245,184,75,.08)}
+.tag{display:inline-block;align-self:flex-start;font-size:22px;font-weight:700;padding:6px 16px;border-radius:999px;border:2px solid currentColor;margin-bottom:14px}
+.quote{font-size:40px;line-height:1.5;font-weight:600;border-left:8px solid var(--amber);padding:8px 0 8px 40px}
+.quote small{display:block;font-size:24px;color:var(--dim);font-weight:500;margin-top:16px}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:27px}
+th,td{padding:16px 20px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);line-height:1.4}
+th{font-size:24px;color:var(--muted);font-weight:600;background:var(--panel2)}
+td:first-child{font-weight:700;white-space:nowrap}
+tr.hl td{background:rgba(245,184,75,.07)}
+.src{position:absolute;left:120px;bottom:44px;font-size:19px;color:var(--dim);max-width:1500px}
+.num{font-variant-numeric:tabular-nums}
+img.chart{max-width:100%;max-height:100%;object-fit:contain;display:block}
+/* chrome */
+#bar{position:fixed;left:0;bottom:0;height:5px;background:var(--amber);transition:width .35s ease;z-index:5}
+#count{position:fixed;right:22px;bottom:16px;font-size:14px;color:var(--dim);z-index:5;font-variant-numeric:tabular-nums}
+#nav{position:fixed;right:18px;bottom:40px;display:flex;gap:8px;z-index:5;opacity:.0;transition:opacity .2s}
+body:hover #nav{opacity:.9}
+#nav button{background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:10px;width:40px;height:40px;font-size:18px;cursor:pointer}
+/* slide-specific */
+.title-slide{justify-content:center}
+.title-slide .sub{font-size:36px;color:var(--muted);margin-top:28px}
+.title-slide .meta{font-size:24px;color:var(--dim);margin-top:64px}
+.title-slide .rule{width:220px;height:8px;background:var(--amber);border-radius:4px;margin:44px 0 0}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:48px}
+.verdict{border-radius:24px;padding:40px 36px;border:3px solid;min-height:380px;display:flex;flex-direction:column}
+.verdict .n{font-size:30px;font-weight:700;color:var(--muted)}
+.verdict h3{font-size:44px;margin:14px 0 18px;line-height:1.25}
+.verdict p{font-size:26px;color:var(--muted);line-height:1.5;flex:1}
+.verdict .v{font-size:40px;font-weight:800;margin-top:20px}
+.people{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;margin-top:44px}
+.book{display:inline-block;font-size:22px;padding:6px 14px;margin:4px 6px 4px 0;border-radius:10px;background:var(--panel2);color:var(--ink)}
+.tl{position:relative;margin-top:90px;height:560px}
+.tl .axis{position:absolute;left:0;right:0;top:182px;height:4px;background:var(--line);border-radius:2px;transform-origin:left center}
+.tl .ev{position:absolute;top:0;height:100%;width:236px;margin-left:-118px;text-align:center}
+.tl .ev .d{position:absolute;top:118px;left:0;right:0;font-size:27px;font-weight:800;color:var(--amber)}
+.tl .ev .dot{position:absolute;top:168px;left:50%;margin-left:-16px;width:32px;height:32px;border-radius:50%;border:5px solid var(--bg)}
+.tl .ev .t{position:absolute;top:232px;left:0;right:0;font-size:23px;line-height:1.45;color:var(--muted)}
+.tl .ev .t b{color:var(--ink);display:block;font-size:27px;margin-bottom:6px}
+.tl .ev.key .t{background:rgba(245,184,75,.08);border:2px solid var(--amber);border-radius:16px;padding:14px 10px}
+.factors{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:44px}
+.factor{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:34px 30px;display:flex;flex-direction:column;gap:14px}
+.factor .k{font-size:24px;color:var(--amber);font-weight:700}
+.factor h3{font-size:36px;line-height:1.3}
+.factor .q{font-size:28px;font-weight:600;color:var(--blue)}
+.factor p{font-size:24px;color:var(--muted);line-height:1.5}
+.split{display:flex;align-items:center;justify-content:center;gap:70px;margin-top:40px;flex:1}
+.blob{border-radius:24px;padding:30px 34px;border:3px solid;font-size:30px;font-weight:700;text-align:center;line-height:1.4}
+.blob small{display:block;font-size:22px;font-weight:500;color:var(--muted);margin-top:8px}
+.matrix{display:grid;grid-template-columns:300px repeat(3,1fr);gap:12px;margin-top:36px}
+.matrix .h{font-size:26px;font-weight:700;padding:18px 22px;border-radius:14px;background:var(--panel2);text-align:center}
+.matrix .rh{font-size:25px;font-weight:700;padding:18px 22px;border-radius:14px;background:var(--panel2);display:flex;flex-direction:column;justify-content:center}
+.matrix .rh small{font-size:19px;color:var(--muted);font-weight:500}
+.matrix .c{border-radius:14px;padding:16px 22px;font-size:22px;line-height:1.4;color:var(--muted);display:flex;gap:14px;align-items:flex-start;border:2px solid transparent}
+.matrix .c i{font-style:normal;font-size:30px;font-weight:800;flex:none;width:34px;text-align:center;line-height:1.1}
+.matrix .p{background:rgba(79,209,165,.10);border-color:rgba(79,209,165,.35)} .matrix .p i{color:var(--green)}
+.matrix .m{background:rgba(255,107,107,.10);border-color:rgba(255,107,107,.35)} .matrix .m i{color:var(--red)}
+.matrix .z{background:rgba(174,183,199,.08);border-color:rgba(174,183,199,.25)} .matrix .z i{color:var(--muted)}
+.matrix .res{font-size:28px;font-weight:800;text-align:center;justify-content:center;align-items:center}
+.copies{display:grid;grid-template-columns:repeat(5,1fr);gap:22px;margin-top:40px}
+.copy{background:var(--panel);border:2px solid var(--line);border-radius:20px;padding:26px 24px;text-align:center;display:flex;flex-direction:column;gap:12px}
+.copy .nm{font-size:26px;font-weight:700}
+.copy .delta{font-size:56px;font-weight:800}
+.copy p{font-size:21px;color:var(--muted);line-height:1.45}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:50px}
+.stat{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:38px 32px}
+.stat .v{font-size:76px;font-weight:800;line-height:1.1;color:var(--ink)}
+.stat .l{font-size:26px;color:var(--muted);margin-top:14px;line-height:1.45}
+.theories{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:44px}
+.theory{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:36px 32px;display:flex;flex-direction:column;gap:16px}
+.theory h3{font-size:36px}
+.theory p{font-size:25px;line-height:1.5;color:var(--muted);flex:1}
+.theory .r{font-size:26px;font-weight:700;padding-top:16px;border-top:1px solid var(--line)}
+.video-wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin-top:20px}
+.video-wrap video{height:100%;max-height:760px;border-radius:20px;border:2px solid var(--line);background:#0F1420}
+ol.big{list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:30px}
+ol.big li{counter-increment:n;display:flex;gap:26px;font-size:31px;line-height:1.5;color:var(--muted)}
+ol.big li::before{content:counter(n);flex:none;width:52px;height:52px;border-radius:50%;background:var(--panel2);color:var(--amber);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:26px}
+ol.big li b{color:var(--ink)}
+.refs li{font-size:29px;line-height:1.5;color:var(--muted);margin-bottom:18px}
+.refs li b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="deck">
+
+<!-- 1 -->
+<section class="slide title-slide" data-anim="title">
+  <div class="kicker a-in">AI 저작권 분쟁 분석</div>
+  <h1 class="a-in">앤트로픽 vs 바츠<br>AI 학습은 공정이용인가</h1>
+  <div class="rule a-in"></div>
+  <div class="sub a-in">Bartz v. Anthropic PBC · 미국 캘리포니아 북부 연방지방법원 · 2024–2026</div>
+  <div class="meta a-in">사건 개요 · 공정이용 · 판단의 흐름 · 메타 사건 비교 · 한계와 의의</div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-anim="verdicts">
+  <div class="kicker">한눈에 보기</div>
+  <h2>법원은 하나의 사건을 세 가지 이용으로 나눠 판단했다</h2>
+  <p class="lead">결론은 <b>“학습은 괜찮지만, 해적판을 모아 둔 것은 안 된다.”</b> 이 판단 이후 앤트로픽은 15억 달러에 합의했다.</p>
+  <div class="verdicts">
+    <div class="verdict b-green t-green a-v"><div class="n">① 이용</div><h3>LLM 학습</h3><p>책을 복제해 클로드의 언어모델을 학습시킨 것</p><div class="v green">✔ 공정이용</div></div>
+    <div class="verdict b-green t-green a-v"><div class="n">② 이용</div><h3>구매한 종이책의<br>디지털화</h3><p>중고 종이책을 사서 스캔하고 원본은 폐기</p><div class="v green">✔ 공정이용</div></div>
+    <div class="verdict b-red t-red a-v"><div class="n">③ 이용</div><h3>해적판으로 만든<br>중앙 도서관</h3><p>해적 사이트에서 700만 권 이상을 받아 “영원히” 보관</p><div class="v red">✖ 공정이용 아님</div></div>
+  </div>
+  <div class="src">출처: Order on Fair Use, No. C 24-05417 WHA (N.D. Cal. 2025. 6. 23.)</div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">1. 사건 개요</div>
+  <h2>누가, 누구를 상대로</h2>
+  <p class="lead">작가 3명이 “내 책을 허락 없이 AI 학습에 썼다”며 앤트로픽을 상대로 <b>집단소송</b>을 제기했다(2024년 8월).</p>
+  <div class="people">
+    <div class="card a-s">
+      <span class="tag amber">원고 · 작가 측</span>
+      <h3>안드레아 바츠 · 찰스 그레이버 · 커크 월리스 존슨</h3>
+      <p style="margin-bottom:16px">+ 저작권 관리 법인 Bartz Inc., MJ + KJ Inc.</p>
+      <div><span class="book">바츠 소설 4권</span><span class="book">그레이버 논픽션 2권</span><span class="book">존슨 논픽션 3권</span></div>
+      <p style="margin-top:18px">총 <b>9권</b>이 해적판·구매본 경로로 복제되었다</p>
+    </div>
+    <div class="col">
+      <div class="card a-s"><span class="tag blue">피고</span><h3>앤트로픽 (Anthropic PBC)</h3><p>2021년 1월 OpenAI 출신이 설립. 대화형 AI <b>클로드</b> 운영, 연 매출 <b>10억 달러 이상</b></p></div>
+      <div class="card a-s"><span class="tag" style="color:var(--muted)">법원</span><h3>캘리포니아 북부 연방지방법원</h3><p>공정이용: <b>윌리엄 알섭</b> 판사<br>합의 최종승인: <b>아라셀리 마르티네스-올긴</b> 판사</p></div>
+    </div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 1–2 · Final Approval Order (2026. 7. 20.)</div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">1. 사건 개요</div>
+  <h2>책을 모은 두 경로가 판결을 갈랐다</h2>
+  <div class="body" style="margin-top:24px">
+    <div class="col" style="flex:1.35">
+      <div class="card b-red a-s" style="padding:24px 30px">
+        <h3 class="red">경로 ① 해적판 다운로드 · 합계 700만 권 이상</h3>
+        <img class="chart" src="assets/chart_pirated.png" alt="해적판 다운로드 규모: Books3 196,640권, LibGen 최소 500만 권, PiLiMi 최소 200만 권" style="max-height:440px;margin-top:8px">
+      </div>
+    </div>
+    <div class="col">
+      <div class="card a-s"><p>CEO 다리오 아모데이: 책을 살 곳은 많았지만 <b>“법적·실무적·사업적 수고(slog)”</b>를 피하려 했다</p></div>
+      <div class="card b-green a-s">
+        <h3 class="green">경로 ② 종이책 구매 후 스캔</h3>
+        <ul>
+          <li>2024년 2월 구글 북스 출신 <b>톰 터비</b> 영입</li>
+          <li>출판사 라이선스 협상은 <b>흐지부지</b></li>
+          <li>중고 종이책 <b>수백만 권</b>을 수백만 달러에 구매</li>
+          <li>제본 해체 → 스캔 → <b>종이 원본 폐기</b></li>
+        </ul>
+      </div>
+      <div class="card b-amber a-s"><p>두 경로 모두 사내 <b>중앙 도서관</b>으로. 방침은 <b class="amber">“모든 것을 영원히 보관”</b></p></div>
+    </div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 2–5. 수치는 판결문에 기재된 최소치</div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-anim="video">
+  <div class="kicker">1. 사건 개요</div>
+  <h2>책 한 권은 학습 과정에서 네 번 복제된다</h2>
+  <div class="video-wrap"><video id="pipeVid" muted playsinline preload="auto"><source src="assets/pipeline.webm" type="video/webm"><source src="assets/pipeline.mp4" type="video/mp4"></video></div>
+  <div class="src">출처: Order on Fair Use pp. 6–7 · 애니메이션: manim</div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-anim="timeline">
+  <div class="kicker">1. 사건 개요</div>
+  <h2>소송 경과: 제소부터 합의 최종승인까지 23개월</h2>
+  <div class="tl">
+    <div class="axis"></div>
+    <div class="ev" style="left:6%"><div class="t"><b>집단소송 제기</b>작가 3명</div><div class="d">2024.8</div><div class="dot" style="background:var(--muted)"></div></div>
+    <div class="ev" style="left:20%"><div class="t"><b>약식판결 신청</b>집단 인증 전에<br>공정이용부터</div><div class="d">2025.2</div><div class="dot" style="background:var(--muted)"></div></div>
+    <div class="ev key" style="left:35%"><div class="t"><b>공정이용 판결</b>학습 ✔ · 해적판 ✖<br>→ 재판 회부</div><div class="d">2025.6.23</div><div class="dot" style="background:var(--amber)"></div></div>
+    <div class="ev" style="left:50%"><div class="t"><b>합의 조건서 서명</b>15억 달러</div><div class="d">2025.8</div><div class="dot" style="background:var(--muted)"></div></div>
+    <div class="ev" style="left:65%"><div class="t"><b>합의 예비승인</b></div><div class="d">2025.10.17</div><div class="dot" style="background:var(--muted)"></div></div>
+    <div class="ev" style="left:80%"><div class="t"><b>최종승인 심리</b></div><div class="d">2026.5.14</div><div class="dot" style="background:var(--muted)"></div></div>
+    <div class="ev" style="left:94%"><div class="t"><b>최종승인 · 종결</b>소송 각하(재소 금지)</div><div class="d">2026.7.20</div><div class="dot" style="background:var(--green)"></div></div>
+  </div>
+  <div class="src">출처: Order on Fair Use p. 8 · Final Approval Order pp. 1–5, 23</div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">2. 공정이용이란</div>
+  <h2>허락 없이 복제해도 ‘공정’하면 침해가 아니다</h2>
+  <p class="lead">미국 저작권법 제107조. 앤트로픽은 복제 사실은 다투지 않고 <b>“그 복제는 공정이용”</b>이라고 항변했다. 법원은 네 요소를 종합해 사건별로 판단한다.</p>
+  <div class="factors">
+    <div class="factor a-s"><div class="k">제1요소</div><h3>이용의 목적과 성격</h3><div class="q">“왜 썼는가?”</div><p>새로운 목적을 더한 <b style="color:var(--ink)">변형적 이용</b>이면 유리</p></div>
+    <div class="factor a-s"><div class="k">제2요소</div><h3>저작물의 성격</h3><div class="q">“무엇을 썼는가?”</div><p>사실·정보 중심이면 유리, 창작성이 높으면 불리</p></div>
+    <div class="factor a-s"><div class="k">제3요소</div><h3>이용된 양과 중요성</h3><div class="q">“얼마나 썼는가?”</div><p>목적에 비춰 필요한 만큼이면 유리</p></div>
+    <div class="factor a-s b-amber"><div class="k">제4요소</div><h3>시장에 미치는 영향</h3><div class="q">“원작 판매를 갉아먹는가?”</div><p>연방대법원: <b style="color:var(--ink)">“가장 중요한 단일 요소”</b> (Harper &amp; Row, 1985)</p></div>
+  </div>
+  <div class="src">출처: 17 U.S.C. § 107 · 이주연(2025) Ⅲ.1</div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">2. 공정이용이란</div>
+  <h2>한국 저작권법 제35조의5는 미국 제107조를 모델로 했다</h2>
+  <div class="body" style="margin-top:28px">
+    <div class="col" style="flex:1.5">
+      <table class="a-s">
+        <tr><th style="width:44%">미국 제107조</th><th>한국 제35조의5 제2항</th></tr>
+        <tr><td>① 이용의 목적과 성격</td><td>1. 이용의 목적 및 성격</td></tr>
+        <tr><td>② 저작물의 성격</td><td>2. 저작물의 종류 및 용도</td></tr>
+        <tr><td>③ 이용된 부분의 양과 중요성</td><td>3. 이용된 부분이 차지하는 비중과 중요성</td></tr>
+        <tr><td>④ 잠재적 시장·가치에 미치는 영향</td><td>4. 현재 또는 잠재적 시장·가치에 미치는 영향</td></tr>
+      </table>
+    </div>
+    <div class="col">
+      <div class="card b-amber a-s"><h3>한국도 TDM 면책 규정 없음</h3><p>미국처럼 AI 학습 분쟁은 <b>일반 공정이용 조항</b>으로 판단할 가능성이 크다 → 미국 판결이 중요한 참고자료</p></div>
+      <div class="card a-s"><h3>EU는 다른 길</h3><p>저작권자가 거부(<b>옵트아웃</b>)하지 않은 저작물의 TDM 허용. AI법은 범용 AI 제공자에게 옵트아웃 준수 의무</p></div>
+    </div>
+  </div>
+  <div class="src">출처: 이주연(2025) 각주 17·18·35 · 세종 뉴스레터(2025. 7. 10.)</div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-anim="split">
+  <div class="kicker">3. 판단의 흐름</div>
+  <h2>출발점: 앤트로픽의 ‘이용’은 하나인가, 셋인가</h2>
+  <p class="lead">Warhol 판결(2023): 같은 저작물도 여러 방식으로 이용될 수 있고, <b>각 이용을 따로 평가</b>해야 한다.</p>
+  <div class="split">
+    <div class="col" style="flex:none;width:520px;gap:28px">
+      <div class="blob b-blue a-one">앤트로픽<br>“용도는 <span class="blue">LLM 학습</span> 하나”<small>해적판 다운로드도 학습을 위한 과정</small></div>
+      <div class="blob b-amber a-one">작가들<br>“<span class="amber">도서관 구축</span> + <span class="amber">학습</span>”<small>종이책 디지털화도 별도 침해</small></div>
+    </div>
+    <svg width="160" height="300" viewBox="0 0 160 300" class="a-arrow"><path d="M10 150 H140 M110 120 L140 150 L110 180" stroke="#F5B84B" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="col" style="flex:none;width:640px;gap:20px">
+      <div class="blob b-green t-green a-three" style="text-align:left">① 학습용 사본</div>
+      <div class="blob b-green t-green a-three" style="text-align:left">② 구매 후 디지털화한 사본</div>
+      <div class="blob b-red t-red a-three" style="text-align:left">③ 해적판 도서관 사본</div>
+      <p class="a-three" style="font-size:24px;color:var(--muted);line-height:1.5">법원: 학습에 안 쓸 책도 “영원히” 보관했고 수백 명이 제한 없이 접근 → <b style="color:var(--ink)">도서관 구축은 그 자체로 별개의 이용</b></p>
+    </div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 10–11, 18–19</div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-anim="matrix">
+  <div class="kicker">3. 판단의 흐름</div>
+  <h2>세 가지 이용 × 4요소 판정표</h2>
+  <div class="matrix">
+    <div></div>
+    <div class="h">① 학습용 사본</div><div class="h">② 구매 도서 디지털화</div><div class="h">③ 해적판 도서관 사본</div>
+    <div class="rh">제1요소<small>목적·성격</small></div>
+    <div class="c p a-c"><i>+</i>“본질적으로 변형적”</div><div class="c p a-c"><i>+</i>공간 절약·검색용 형식 변경</div><div class="c m a-c"><i>−</i>돈 안 내고 범용 도서관 구축</div>
+    <div class="rh">제2요소<small>저작물 성격</small></div>
+    <div class="c m a-c"><i>−</i>표현이 풍부해서 선택됨</div><div class="c m a-c"><i>−</i>동일</div><div class="c m a-c"><i>−</i>동일</div>
+    <div class="rh">제3요소<small>이용의 양</small></div>
+    <div class="c p a-c"><i>+</i>전체 복제가 “합리적으로 필요”</div><div class="c p a-c"><i>+</i>원본 폐기, 잉여 복제 없음</div><div class="c m a-c"><i>−</i>“쓸모 있을지 몰라서” 통째로</div>
+    <div class="rh">제4요소<small>시장 영향</small></div>
+    <div class="c p a-c"><i>+</i>원작 수요를 대체하지 않음</div><div class="c z a-c"><i>·</i>외부 배포 없음 → 중립</div><div class="c m a-c"><i>−</i>“한 권 대 한 권” 수요 대체</div>
+    <div class="rh">결론</div>
+    <div class="c p res a-r green">공정이용</div><div class="c p res a-r green">공정이용</div><div class="c m res a-r red">공정이용 아님 → 재판</div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 11–31 · 이주연(2025) Ⅲ.2 표 &nbsp;(+ 유리 · − 불리 · · 중립)</div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">3. 판단의 흐름 · ① 학습</div>
+  <h2>“작가를 꿈꾸는 독자처럼”</h2>
+  <div class="quote a-s">“읽을 때마다, 기억에서 떠올릴 때마다, 그것을 바탕으로 새 글을 쓸 때마다 돈을 내라는 것은 상상할 수 없다.”<small>— 알섭 판사, Order on Fair Use p. 12</small></div>
+  <div class="body" style="margin-top:44px">
+    <div class="card a-s" style="flex:1"><h3>출력은 쟁점 아님</h3><p>작가들은 클로드가 자기 책을 출력했다고 주장하지 않았다. “출력이 침해였다면 <b>다른 사건</b>”</p></div>
+    <div class="card a-s" style="flex:1"><h3>문체는 보호 대상 아님</h3><p>여러 명작에서 문법·구성·문체를 배워 섞는 것은 침해가 아니다 (§102(b))</p></div>
+    <div class="card a-s" style="flex:1"><h3>Ross 판결과 구별</h3><p>판례 <b>검색</b> AI(비생성형)와 달리 새 글을 쓰는 <b>생성형</b> AI는 변형적</p></div>
+    <div class="card a-s" style="flex:1"><h3>경쟁작 증가는 무관</h3><p>“아이들에게 글쓰기를 가르치면 경쟁작이 는다”는 불평과 같다</p></div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 11–14, 25–29</div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-anim="copies">
+  <div class="kicker">3. 판단의 흐름 · ② 구매 도서 디지털화</div>
+  <h2>사본이 늘지 않았다: 하나가 다른 하나를 대체했다</h2>
+  <p class="lead">판사는 “도서관도 학습의 일부”라는 앤트로픽 주장은 받아들이지 않았다. 대신 <b>더 좁은 이유</b>로 공정이용을 인정했다.</p>
+  <div class="copies">
+    <div class="copy a-s"><div class="nm">Texaco</div><div class="delta amber num" data-to="1" data-prefix="+">+1</div><p>학술지 복사<br>(사본 증가)</p></div>
+    <div class="copy a-s"><div class="nm">구글 북스</div><div class="delta amber num" data-to="1" data-prefix="+">+1</div><p>검색용 디지털화<br>(사본 증가)</p></div>
+    <div class="copy a-s"><div class="nm">Sony Betamax</div><div class="delta amber num" data-to="1" data-prefix="+">+1</div><p>TV 녹화<br>(사본 증가)</p></div>
+    <div class="copy a-s b-green t-green"><div class="nm">앤트로픽</div><div class="delta green num" data-to="0" data-prefix="±">±0</div><p>스캔 후 종이 원본 폐기<br><b style="color:var(--ink)">외부 배포 없음</b></p></div>
+    <div class="copy a-s b-red"><div class="nm">Napster</div><div class="delta red">수백만</div><p>파일 공유<br>(공정이용 부정)</p></div>
+  </div>
+  <div class="card a-s" style="margin-top:30px"><p>작가들은 디지털본을 더 비싸게 팔 기회를 잃었다고 주장할 수 있다. 하지만 같은 책을 구매자마다 다른 값에 팔 권리는 저작권에 없다 <b>(Kirtsaeng 판결)</b></p></div>
+  <div class="src">출처: Order on Fair Use pp. 14–17</div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">3. 판단의 흐름 · ③ 해적판 도서관</div>
+  <h2>“나중에 학습에 쓸 것”은 면죄부가 아니다</h2>
+  <div class="quote a-s" style="border-color:var(--red)">“연구 목적이라고 스스로 축복하고 아무 교과서나 가져갈 수는 없다. 그러면 학술 출판 시장이 무너진다.”<small>— 앤트로픽 측 변론. 판사는 이 말을 그대로 인용했다 (p. 18)</small></div>
+  <div class="body" style="margin-top:40px">
+    <div class="col"><div class="card b-red a-s"><h3>본질적으로 침해</h3><p>서점에서 살 수 있는 책을 해적판으로 받는 것은 <b>“본질적으로, 돌이킬 수 없이 침해”</b>. 곧바로 학습에 쓰고 지워도 마찬가지</p></div>
+    <div class="card a-s"><h3>악의가 이유는 아니다</h3><p>판단은 주관적 의도가 아닌 <b>실제로 한 일</b>을 기준으로. 악의는 손해배상의 ‘고의’ 판단에 영향</p></div></div>
+    <div class="col"><div class="card a-s"><h3>선례와 다르다</h3><p>구글 북스는 정식 구매본을 빌려 엄격히 통제했다. 앤트로픽은 <b>정식 사본도, 삭제도, 접근 통제도 없었다</b></p></div>
+    <div class="card a-s"><h3>나중에 사도 소용없다</h3><p>훔친 책을 나중에 구매해도 책임은 사라지지 않는다. 다만 <b>법정손해배상액</b>에는 영향 가능</p></div></div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 18–24, 31–32</div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">3. 판단의 흐름</div>
+  <h2>판결이 남긴 것과 판단하지 않은 것</h2>
+  <div class="body">
+    <div class="card b-red a-s" style="flex:1"><span class="tag red">정식재판 회부</span><h3>해적판 도서관과 손해</h3><p>실손해 또는 법정손해배상, <b>고의 침해 여부</b>를 배심 재판에서 다투기로 했다. 이 재판을 앞두고 합의가 이뤄졌다.</p></div>
+    <div class="card b-amber a-s" style="flex:1"><span class="tag amber">판단 유보</span><h3>학습 외 용도 사본</h3><p>앤트로픽이 학습 데이터 구성표를 제출했다가 <b>회수</b>하는 등 증거를 피해 기록이 부족했다.</p></div>
+    <div class="card b-blue a-s" style="flex:1"><span class="tag blue">판결의 무게</span><h3>증명책임은 피고에게</h3><p>약식판결이라 불분명한 사실은 모두 <b>작가 쪽에 유리하게</b> 해석했다. 그래도 학습 부분은 앤트로픽이 이겼다.</p></div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 8–9, 30–32</div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-anim="counters">
+  <div class="kicker">1·6. 합의 결과</div>
+  <h2>15억 달러는 ‘학습’이 아니라 ‘해적판’의 값이다</h2>
+  <div class="stats">
+    <div class="stat b-amber"><div class="v num" data-count="1.5" data-dec="1" data-pre="$" data-suf="B">$1.5B</div><div class="l">합의금 (반환 없는 기금)</div></div>
+    <div class="stat"><div class="v num" data-count="482460" data-dec="0">482,460</div><div class="l">대상 작품 수<br>(LibGen·PiLiMi 작품 목록)</div></div>
+    <div class="stat b-green"><div class="v num green" data-count="3000" data-dec="0" data-pre="≈$">≈$3,000</div><div class="l">작품당 배상 (비용 공제 전)</div></div>
+    <div class="stat"><div class="v num" data-count="91.3" data-dec="1" data-suf="%">91.3%</div><div class="l">청구율 (2026. 4. 16. 기준)</div></div>
+  </div>
+  <div class="body" style="margin-top:36px">
+    <div class="card b-red a-s" style="flex:1"><h3>해적판 파일 폐기</h3><p>LibGen·PiLiMi 원본과 그 복사본 전부 폐기</p></div>
+    <div class="card a-s" style="flex:1.3"><h3>면책 범위는 좁다</h3><p>2025. 8. 25. 이전 <b>입력</b>만. AI <b>출력</b>·이후 행위 청구는 남는다</p></div>
+    <div class="card a-s" style="flex:1.3"><h3>앤트로픽의 진술</h3><p>LibGen·PiLiMi는 상용 출시 모델의 <b>학습 데이터에 포함되지 않았다</b></p></div>
+  </div>
+  <div class="src">출처: Final Approval Order pp. 3–6, 11, 17</div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">6. 합의 결과 · 데이터</div>
+  <h2>작품당 약 3,000달러: 법정 최저액의 4배</h2>
+  <p class="lead">법원 안내문 기준 법정손해배상은 작품당 <b>200~150,000달러</b>. 가장 흔한 배상액은 통상 침해 최저액 <b>750달러</b>다.</p>
+  <div class="video-wrap a-s"><img class="chart" src="assets/chart_perwork.png" alt="작품당 배상 위치: 무과실 최저 200달러, 통상 최저 750달러, 합의 약 3,000달러, 최고 150,000달러 (로그 축)" style="max-height:620px"></div>
+  <div class="src">출처: Final Approval Order pp. 4, 10, 18 · 그래프: matplotlib (로그 축)</div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">6. 합의 결과 · 데이터</div>
+  <h2>저작권자 91.3%가 청구했고, 법원은 변호사 보수를 깎았다</h2>
+  <div class="body" style="align-items:stretch">
+    <div class="card a-s" style="flex:0.8;display:flex;flex-direction:column">
+      <h3>작품 청구율</h3>
+      <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center"><img class="chart" src="assets/chart_claims.png" alt="청구율 91.3%: 482,460건 중 440,490건" style="max-height:470px"></div>
+      <p>제외 신청 <b>350명(1,802건)</b>, 이의·의견 <b>54건</b></p>
+    </div>
+    <div class="card a-s" style="flex:1.2;display:flex;flex-direction:column">
+      <h3>변호사 보수: 요청 → 법원 인정</h3>
+      <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center"><img class="chart" src="assets/chart_fees.png" alt="변호사 보수: 최초 요청 3억 달러, 수정 요청 1억 8,750만 달러, 법원 인정 약 1억 156만 달러, lodestar 2,710만 달러" style="max-height:470px"></div>
+      <p>1억 8,750만 달러는 lodestar의 <b>6.92배</b>로 과도 → 약 6.8%로 감액. 대표 원고 보상도 5만 → <b>1만 5천 달러</b></p>
+    </div>
+  </div>
+  <div class="src">출처: Final Approval Order pp. 4–6, 14–15, 21–22 · 그래프: matplotlib</div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">4. 메타 사건과의 비교</div>
+  <h2>이틀 뒤, 같은 법원의 다른 판사: Kadrey v. Meta</h2>
+  <div class="body">
+    <div class="col">
+      <div class="card a-s"><span class="tag blue">2025. 6. 25. · 빈스 차브리아 판사</span><h3>작가 13명 vs 메타 (라마 학습)</h3><p>메타는 원고들의 책을 최소 <b>666권</b> 내려받았다</p></div>
+      <div class="card a-s"><h3>라이선스 시도와 포기</h3><ul><li>AI 학습 권리는 대개 출판사가 아닌 작가에게</li><li>출판사 권리는 지역 한정</li><li>일부 출판사는 연락 무시</li></ul></div>
+    </div>
+    <div class="col">
+      <div class="card b-red a-s"><h3>해적판 토렌트</h3><ul><li>2022.10 LibGen에서 받아 학습 가치 조사</li><li>2023 봄 라이선스 실패 → 그대로 학습</li><li>2024 초 <b>Anna's Archive</b>까지 다운로드</li></ul></div>
+      <div class="card b-amber a-s"><h3>결론: 공정이용 — 단, 이 원고들에 한해</h3><p>원고들이 제4요소를 제대로 증명하지 못한 결과일 뿐, <b>AI 학습이 일반적으로 합법이라는 뜻은 아니다</b></p></div>
+    </div>
+  </div>
+  <div class="src">출처: 이주연(2025) Ⅲ.3 · 세종 뉴스레터(2025. 7. 10.) — 메타 판결문 원문은 자료에 미포함</div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">4. 메타 사건과의 비교</div>
+  <h2>결론은 같고, 보는 눈은 반대였다</h2>
+  <table class="a-s" style="margin-top:20px">
+    <tr><th style="width:22%">비교 항목</th><th style="width:39%">앤트로픽 (알섭 판사)</th><th>메타 (차브리아 판사)</th></tr>
+    <tr class="hl"><td>판단 구조</td><td><b>행위별로 쪼개어</b> 판단</td><td>취득~학습을 <b>하나의 목적으로 묶어</b> 판단</td></tr>
+    <tr><td>제1요소: 학습</td><td class="green">+ 본질적으로 변형적</td><td class="green">+ 혁신적 도구 (단, 사람의 독서와는 다름)</td></tr>
+    <tr class="hl"><td>제1요소: 해적판</td><td class="red">− 별개의 비변형적 이용</td><td class="green">최종 이용이 변형적이면 다운로드도 변형적</td></tr>
+    <tr><td>제2요소</td><td class="red">− 표현적 저작물</td><td class="red">− 고도로 표현적</td></tr>
+    <tr><td>제3요소</td><td class="green">+ 합리적으로 필요</td><td class="green">+ 동일</td></tr>
+    <tr><td>제4요소: 라이선스 시장</td><td>인정 안 함</td><td>인정 안 함 (순환논리)</td></tr>
+    <tr class="hl"><td>제4요소: 시장 희석</td><td><b>고려 대상 아님</b></td><td><b class="amber">고려 대상</b> — 다만 증거 부족</td></tr>
+    <tr><td>결론</td><td>학습·디지털화 ✔ / 해적판 ✖ → 15억 달러 합의</td><td>전체 공정이용 (이 원고들에 한해)</td></tr>
+  </table>
+  <div class="src">출처: 이주연(2025) Ⅲ.4 · 강조 행 = 두 판사가 갈린 지점</div>
+</section>
+
+<!-- 20 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">4. 메타 사건과의 비교</div>
+  <h2>차브리아 판사가 정리한 시장 피해 세 가지</h2>
+  <p class="lead">제4요소는 <b>“단연코 가장 중요한 요소”</b>. 학습이 아무리 변형적이어도 저작권자가 이길 길은 여기뿐이다.</p>
+  <div class="theories">
+    <div class="theory a-s"><span class="tag" style="color:var(--muted)">이론 ①</span><h3>재출력</h3><p>AI가 원작을 그대로 또는 유사하게 출력해 사용자가 무료로 보게 됨</p><div class="r red">✖ 라마는 의미 있는 분량을 출력하지 않음</div></div>
+    <div class="theory a-s"><span class="tag" style="color:var(--muted)">이론 ②</span><h3>학습용 라이선스 시장 훼손</h3><p>무단 학습이 ‘AI 학습용 라이선스’ 시장을 망침</p><div class="r red">✖ 변형적 이용의 라이선스료 상실은 손해 아님</div></div>
+    <div class="theory a-s b-amber"><span class="tag amber">이론 ③</span><h3>시장 희석</h3><p>같은 주제·장르 경쟁작이 쏟아져 원작을 <b style="color:var(--ink)">간접 대체</b>. 사람이 쓴 로맨스 대신 AI 로맨스를 사는 것</p><div class="r amber">△ 주장은 유효, 원고는 추측만 제시</div></div>
+  </div>
+  <div class="card a-s" style="margin-top:28px"><p>희석은 모두에게 같지 않다: <b>신진 작가</b>, 뉴스·논픽션 같은 <b>기능적 저작물</b>이 더 쉽게 대체된다. 비교 기준은 ‘LLM이 없는 세상’이 아니라 <b>‘저작물로 학습하지 않은 LLM’</b>이다.</p></div>
+  <div class="src">출처: 이주연(2025) Ⅲ.3 표 · 세종 뉴스레터</div>
+</section>
+
+<!-- 21 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">5. 쟁점과 시각</div>
+  <h2>법정의 여섯 가지 쟁점</h2>
+  <table class="a-s" style="margin-top:16px;font-size:25px">
+    <tr><th style="width:20%">쟁점</th><th style="width:28%">AI 기업에 유리한 시각</th><th style="width:28%">저작권자에 유리한 시각</th><th>현재 법원의 위치</th></tr>
+    <tr><td>① 학습 = 독서?</td><td>읽고 배우는 데 매번 돈 내지 않는다</td><td>사람도 책값을 낸다. LLM은 수많은 ‘직원’ 역할</td><td>둘 다 변형적 인정</td></tr>
+    <tr><td>② 입력·출력 분리</td><td>출력이 침해 아니면 학습은 무방</td><td>모델 속 ‘암기’ 자체가 복제</td><td>침해 출력 없다는 전제에서만 판단</td></tr>
+    <tr class="hl"><td>③ 취득 적법성</td><td>최종 목적이 변형적이면 부차적</td><td>해적판 취득은 독립 침해</td><td><b>판사별로 갈림</b></td></tr>
+    <tr><td>④ 라이선스 시장</td><td>인정하면 순환논리</td><td>실제 형성 중. 무조건 부정도 순환논리</td><td>둘 다 불인정</td></tr>
+    <tr class="hl"><td>⑤ 시장 희석</td><td>경쟁 증가는 보호 대상 아님</td><td>대량 경쟁작은 창작 유인을 해친다</td><td><b>판사별로 갈림</b></td></tr>
+    <tr><td>⑥ 생성형 여부</td><td>새 글을 쓰면 변형적</td><td>원작과 같은 기능이면 아님</td><td>검색 AI(Ross) ✖ / 생성형 ✔</td></tr>
+  </table>
+  <div class="src">출처: 보고서 5장 (판결문 · 이주연(2025) · 세종 뉴스레터 종합)</div>
+</section>
+
+<!-- 22 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">5. 쟁점과 시각</div>
+  <h2>세 주체, 세 가지 시각</h2>
+  <div class="verdicts" style="margin-top:40px">
+    <div class="verdict b-blue a-s"><div class="n">기술 우호 · 취득 엄격형</div><h3>알섭 판사</h3><p>“학습은 우리 생애 가장 변형적인 기술 중 하나. 그러나 살 수 있는 책을 훔치는 것은 안 된다.”<br><br><b style="color:var(--ink)">“AI 기업을 위한 저작권법의 예외는 없다.”</b></p></div>
+    <div class="verdict b-amber a-s"><div class="n">시장 중시형</div><h3>차브리아 판사</h3><p>“취득 경로보다 시장 피해가 핵심.”<br><br><b style="color:var(--ink)">“많은 경우 허락 없는 학습은 위법하며, AI 기업은 대가를 치를 방법을 찾을 것이다.”</b></p></div>
+    <div class="verdict b-green a-s"><div class="n">라이선스 시장 인정형</div><h3>이주연 교수</h3><p>“두 판결 모두 문제가 있다.”<br><br><b style="color:var(--ink)">“학습용 라이선스 시장을 개발될 개연성이 높은 잠재적 시장으로 인정했어야 한다.”</b></p></div>
+  </div>
+  <div class="src">출처: Order on Fair Use pp. 13, 30 · 이주연(2025) Ⅲ.3, Ⅳ.4, Ⅴ</div>
+</section>
+
+<!-- 23 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">6. 한계와 의의</div>
+  <h2>판단의 한계</h2>
+  <ol class="big a-s" style="margin-top:30px">
+    <li><span><b>1심·개별 사건.</b> 클로드에 대한 판단일 뿐 일반 원칙이 아니다. 합의로 항소심 판단도 없다.</span></li>
+    <li><span><b>출력은 다루지 않았다.</b> ‘침해 출력 없음’ 전제가 깨지면 결론이 달라질 수 있다.</span></li>
+    <li><span><b>라이선스 시장 심리 부족.</b> 생길 수 있다고 가정하고도 배척 — 변형적이기만 하면 제4요소 문턱이 낮아지는 역방향 순환논리 (이주연).</span></li>
+    <li><span><b>“책 한 권 값으로 무제한 학습”.</b> 구매본 디지털화와 학습이 모두 공정이용이면 1권만 사도 반복 학습이 가능하다. 학술지 복사를 돌린 Texaco는 공정이용이 부정됐다.</span></li>
+    <li><span><b>판단 유보 + 좁은 합의.</b> 학습 외 용도 사본은 미결. 합의는 과거 ‘입력’과 목록상 작품만 면책한다.</span></li>
+  </ol>
+  <div class="src">출처: 보고서 6-1 · 이주연(2025) Ⅲ.4, Ⅴ · Final Approval Order p. 11</div>
+</section>
+
+<!-- 24 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">6. 한계와 의의</div>
+  <h2>의의와 한국에 주는 시사점</h2>
+  <div class="body">
+    <div class="col">
+      <div class="card b-green a-s"><h3 class="green">의의</h3><ul>
+        <li><b>최초의 LLM 학습 판단</b> — 메타 판결과 함께 4요소로 처음 분석</li>
+        <li><b>‘무엇을 했나’와 ‘어떻게 구했나’를 분리</b></li>
+        <li><b>적법 취득의 길 제시</b> — 구매·내부 디지털화는 공정이용 가능</li>
+        <li><b>실질적 구제</b> — 15억 달러, 파일 폐기, 청구율 91.3%</li>
+        <li><b>다음 쟁점의 지도</b> — 취득 경로 · 출력 · 시장 희석</li>
+      </ul></div>
+    </div>
+    <div class="col">
+      <div class="card b-amber a-s"><h3 class="amber">한국에 주는 시사점</h3><ul>
+        <li>제35조의5는 §107이 모델, TDM 면책 없음 → <b>직접 참고될 가능성</b></li>
+        <li>‘웹스토리지’ 결정: 불법 파일임을 알고 받으면 사적 복제 아님 → <b>알섭 판사와 같은 방향</b></li>
+        <li>방송 3사 vs 네이버 뉴스 학습 소송(2025. 1.) — <b>뉴스는 시장 희석에 취약</b></li>
+        <li>기업은 ① 생성형 여부 ② 적법 취득 ③ 간접 대체를 점검 (세종)</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="src">출처: 보고서 6-2, 6-4 · 이주연(2025) · 세종 뉴스레터</div>
+</section>
+
+<!-- 25 -->
+<section class="slide" data-anim="stagger">
+  <div class="kicker">참고 자료</div>
+  <h2>이 발표는 아래 다섯 자료만을 근거로 했다</h2>
+  <ol class="refs a-s" style="margin-top:30px;padding-left:34px">
+    <li><b>Bartz v. Anthropic PBC</b>, Order on Fair Use, No. C 24-05417 WHA (N.D. Cal. June 23, 2025)</li>
+    <li><b>U.S. Copyright Office Fair Use Index</b>, Bartz v. Anthropic PBC, 787 F. Supp. 3d 1007 (N.D. Cal. 2025) 요약</li>
+    <li><b>Bartz v. Anthropic PBC</b>, Order Granting Final Approval of Class Action Settlement, No. 3:24-cv-05417-AMO (N.D. Cal. July 20, 2026)</li>
+    <li><b>이주연</b>, “대규모 언어모델 훈련 목적의 저작물 이용과 공정이용 문제 — 앤트로픽 사건과 메타 사건을 중심으로”, 한양대 법학논총 제42집 제4호 (2025)</li>
+    <li><b>법무법인(유) 세종</b>, “‘AI 개발을 위한 저작물 학습과 공정이용’에 관한 최근 미국 판례 동향”, 뉴스레터 (2025. 7. 10.)</li>
+  </ol>
+  <p class="lead" style="margin-top:30px;font-size:26px">메타 사건 판결문 원문은 자료에 포함되지 않아 4·5번 자료의 소개에 근거했다.</p>
+</section>
+
+</div></div>
+
+<div id="bar"></div><div id="count"></div>
+<div id="nav"><button id="prev" aria-label="이전">‹</button><button id="next" aria-label="다음">›</button></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script>
+(function(){
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const bar = document.getElementById('bar'), count = document.getElementById('count');
+  let cur = 0;
+  window.__deckErrors = [];
+
+  function fit(){
+    const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    deck.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  const A = window.anime;
+  const q = (s, sel) => Array.from(s.querySelectorAll(sel));
+  const easeIn = {opacity:[0,1], translateY:[30,0], easing:'easeOutCubic', duration:650};
+
+  const anims = {
+    title(s){ A({targets:q(s,'.a-in'), ...easeIn, delay:A.stagger(140)}); },
+    verdicts(s){ A({targets:q(s,'.a-v'), opacity:[0,1], translateY:[50,0], scale:[.96,1], easing:'easeOutBack', duration:700, delay:A.stagger(260,{start:250})}); },
+    stagger(s){ A({targets:q(s,'.a-s'), ...easeIn, delay:A.stagger(110,{start:150})}); },
+    video(s){ const v = s.querySelector('video'); if(!v) return; try{ v.currentTime = 0; const p = v.play(); if(p && p.catch) p.catch(()=>{}); }catch(e){} },
+    timeline(s){
+      const ax = s.querySelector('.axis'); if(ax) A({targets:ax, scaleX:[0,1], easing:'easeInOutQuad', duration:900});
+      ax && (ax.style.transformOrigin = 'left center');
+      A({targets:q(s,'.ev'), opacity:[0,1], translateY:[20,0], easing:'easeOutCubic', duration:500, delay:A.stagger(170,{start:300})});
+      A({targets:q(s,'.dot'), scale:[0,1], easing:'easeOutBack', duration:500, delay:A.stagger(170,{start:300})});
+    },
+    split(s){
+      const tl = A.timeline({easing:'easeOutCubic'});
+      tl.add({targets:q(s,'.a-one'), opacity:[0,1], translateX:[-40,0], duration:600, delay:A.stagger(200)})
+        .add({targets:q(s,'.a-arrow'), opacity:[0,1], translateX:[-30,0], duration:450})
+        .add({targets:q(s,'.a-three'), opacity:[0,1], translateX:[40,0], duration:550, delay:A.stagger(170)});
+    },
+    matrix(s){
+      A({targets:q(s,'.a-c'), opacity:[0,1], scale:[.9,1], easing:'easeOutCubic', duration:450, delay:A.stagger(70,{grid:[3,4], from:'first', start:200})});
+      A({targets:q(s,'.a-r'), opacity:[0,1], translateY:[20,0], easing:'easeOutBack', duration:600, delay:A.stagger(200,{start:1400})});
+    },
+    copies(s){
+      A({targets:q(s,'.a-s'), ...easeIn, delay:A.stagger(160,{start:150})});
+    },
+    counters(s){
+      q(s,'[data-count]').forEach((el, i) => {
+        const to = parseFloat(el.dataset.count), dec = +el.dataset.dec || 0, pre = el.dataset.pre || '', suf = el.dataset.suf || '';
+        const o = {v:0};
+        A({targets:o, v:to, duration:1500, delay:200 + i*150, easing:'easeOutExpo',
+           update(){ el.textContent = pre + o.v.toLocaleString('en-US',{minimumFractionDigits:dec, maximumFractionDigits:dec}) + suf; }});
+      });
+      A({targets:q(s,'.stat, .a-s'), ...easeIn, delay:A.stagger(110)});
+    }
+  };
+
+  function show(i, animate){
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, k) => { s.classList.toggle('active', k === i); if(k !== i){ const v = s.querySelector('video'); if(v) v.pause(); } });
+    cur = i;
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    if(location.hash !== '#/' + (i + 1)) history.replaceState(null, '', '#/' + (i + 1));
+    const s = slides[i], fn = anims[s.dataset.anim];
+    if(fn && animate !== false && A){ try{ fn(s); }catch(e){ window.__deckErrors.push(String(e)); console.error(e); } }
+  }
+  window.__deck = {show, get cur(){ return cur; }, count: slides.length};
+
+  document.addEventListener('keydown', e => {
+    if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){ e.preventDefault(); show(cur + 1); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){ e.preventDefault(); show(cur - 1); }
+    else if(e.key === 'Home') show(0); else if(e.key === 'End') show(slides.length - 1);
+  });
+  document.getElementById('next').onclick = () => show(cur + 1);
+  document.getElementById('prev').onclick = () => show(cur - 1);
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => { if(tx === null) return; const dx = e.changedTouches[0].clientX - tx; if(Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1)); tx = null; });
+  window.addEventListener('hashchange', () => { const n = parseInt((location.hash.match(/\d+/) || [1])[0], 10) - 1; if(n !== cur) show(n); });
+
+  const start = parseInt((location.hash.match(/\d+/) || [1])[0], 10) - 1;
+  show(isNaN(start) ? 0 : start);
+})();
+</script>
+</body>
+</html>
