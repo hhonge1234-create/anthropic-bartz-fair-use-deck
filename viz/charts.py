@@ -13,12 +13,12 @@ fm.fontManager.addfont("/System/Library/Fonts/AppleSDGothicNeo.ttc")
 plt.rcParams.update({
     "font.family": "Apple SD Gothic Neo",
     "axes.unicode_minus": False,
-    "text.color": "#E8ECF4", "axes.labelcolor": "#AEB7C7",
-    "xtick.color": "#AEB7C7", "ytick.color": "#E8ECF4",
-    "axes.edgecolor": "#3A4357", "font.size": 15,
+    "text.color": "#111827", "axes.labelcolor": "#4B5563",
+    "xtick.color": "#4B5563", "ytick.color": "#111827",
+    "axes.edgecolor": "#D1D5DB", "font.size": 15,
 })
-INK, MUTED, GRID = "#E8ECF4", "#AEB7C7", "#2A3245"
-RED, GREEN, AMBER, BLUE = "#FF6B6B", "#4FD1A5", "#F5B84B", "#6EA8FE"
+INK, MUTED, GRID = "#111827", "#4B5563", "#E5E7EB"
+RED, GREEN, AMBER, BLUE = "#DC2626", "#059669", "#D97706", "#2563EB"
 
 
 def save(fig, name):
@@ -58,10 +58,10 @@ pts = [(200, "무과실 침해\n법정 최저", MUTED), (750, "통상 침해\n�
 ax.set_xscale("log")
 ax.set_xlim(100, 300_000)
 ax.set_ylim(-1, 1.4)
-ax.hlines(0, 200, 150_000, color="#3A4357", lw=10, capstyle="round")
+ax.hlines(0, 200, 150_000, color="#D1D5DB", lw=10, capstyle="round")
 for v, lab, c in pts:
     big = c == GREEN
-    ax.scatter([v], [0], s=520 if big else 220, color=c, zorder=3, edgecolor="#0F1420", lw=2)
+    ax.scatter([v], [0], s=520 if big else 220, color=c, zorder=3, edgecolor="white", lw=2)
     ax.text(v, 0.42, f"${v:,}", ha="center", fontsize=24 if big else 18, fontweight="bold", color=c if big else INK)
     ax.text(v, -0.42, lab, ha="center", va="top", fontsize=14, color=c if big else MUTED, linespacing=1.3)
 ax.annotate("", xy=(3000, 0.95), xytext=(750, 0.95),
@@ -73,8 +73,8 @@ save(fig, "chart_perwork.png")
 # C. Claims rate (Final Approval Order p. 4)
 claimed, total = 440_490, 482_460
 fig, ax = plt.subplots(figsize=(5, 5))
-ax.pie([claimed, total - claimed], colors=[GREEN, "#2A3245"], startangle=90, counterclock=False,
-       wedgeprops=dict(width=0.28, edgecolor="#0F1420", linewidth=2))
+ax.pie([claimed, total - claimed], colors=[GREEN, "#E5E7EB"], startangle=90, counterclock=False,
+       wedgeprops=dict(width=0.28, edgecolor="white", linewidth=2))
 ax.text(0, 0.1, f"{claimed/total*100:.1f}%", ha="center", va="center", fontsize=40, fontweight="bold", color=INK)
 ax.text(0, -0.22, f"{claimed:,} / {total:,}건", ha="center", va="center", fontsize=14, color=MUTED)
 ax.set(aspect="equal")
@@ -82,7 +82,7 @@ save(fig, "chart_claims.png")
 
 # D. Attorney fees: request -> reduced request -> award (Final Approval Order pp. 14-15, 22)
 fig, ax = plt.subplots(figsize=(9, 4.6))
-steps = [("최초 요청\n(20%)", 300_000_000, MUTED), ("수정 요청\n(12.5%)", 187_500_000, AMBER),
+steps = [("최초 요청\n(20%)", 300_000_000, "#9CA3AF"), ("수정 요청\n(12.5%)", 187_500_000, AMBER),
          ("법원 인정\n(약 6.8%)", 101_561_111, GREEN)]
 x = range(len(steps))
 bars = ax.bar(x, [s[1] for s in steps], color=[s[2] for s in steps], width=0.56)
@@ -90,7 +90,7 @@ for b, s in zip(bars, steps):
     ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 6e6, f"${s[1]/1e6:,.1f}M",
             ha="center", fontsize=18, fontweight="bold", color=INK)
 ax.axhline(27_082_963, color=BLUE, lw=1.5, ls="--")
-ax.text(0.5, 27_082_963 + 8e6, "변호인 실제 투입 시간 환산(lodestar) $27.1M", ha="center", fontsize=12.5, color=BLUE)
+ax.text(2.45, 315_000_000, "- - -  실제 투입 시간 환산(lodestar) $27.1M", ha="right", fontsize=12.5, color=BLUE)
 ax.set_xticks(list(x), [s[0] for s in steps], fontsize=14)
 ax.set_ylim(0, 340_000_000)
 ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"${v/1e6:.0f}M"))

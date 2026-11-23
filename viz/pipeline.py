@@ -1,8 +1,8 @@
 """Manim: how one book is copied on its way into Claude (Order on Fair Use, pp. 4-7)."""
 from manim import *
 
-BG, INK, MUTED = "#0F1420", "#E8ECF4", "#AEB7C7"
-RED, GREEN, AMBER, BLUE = "#FF6B6B", "#4FD1A5", "#F5B84B", "#6EA8FE"
+BG, INK, MUTED = "#FFFFFF", "#111827", "#4B5563"
+RED, GREEN, AMBER, BLUE = "#DC2626", "#059669", "#D97706", "#2563EB"
 FONT = "Apple SD Gothic Neo"
 config.background_color = BG
 
