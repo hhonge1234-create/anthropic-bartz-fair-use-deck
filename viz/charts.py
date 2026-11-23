@@ -14,7 +14,7 @@ plt.rcParams.update({
     "font.family": "Apple SD Gothic Neo",
     "axes.unicode_minus": False,
     "text.color": "#111827", "axes.labelcolor": "#4B5563",
-    "xtick.color": "#4B5563", "ytick.color": "#111827",
+    "xtick.color": "#111827", "ytick.color": "#111827",
     "axes.edgecolor": "#D1D5DB", "font.size": 15,
 })
 INK, MUTED, GRID = "#111827", "#4B5563", "#E5E7EB"
@@ -45,9 +45,10 @@ for b, t in zip(bars, txt):
             va="center", fontsize=17, fontweight="bold", color=INK)
 ax.set_xlim(0, 6_300_000)
 ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v/1e6:.0f}백만" if v else "0"))
-ax.grid(axis="x", color=GRID, lw=1)
+ax.grid(axis="x", color="#CBD5E1", lw=1)
 ax.set_axisbelow(True)
-ax.tick_params(axis="y", length=0, labelsize=15)
+ax.tick_params(axis="y", length=0, labelsize=17)
+ax.tick_params(axis="x", labelsize=15, colors=INK)
 clean(ax)
 save(fig, "chart_pirated.png")
 
@@ -63,7 +64,7 @@ for v, lab, c in pts:
     big = c == GREEN
     ax.scatter([v], [0], s=520 if big else 220, color=c, zorder=3, edgecolor="white", lw=2)
     ax.text(v, 0.42, f"${v:,}", ha="center", fontsize=24 if big else 18, fontweight="bold", color=c if big else INK)
-    ax.text(v, -0.42, lab, ha="center", va="top", fontsize=14, color=c if big else MUTED, linespacing=1.3)
+    ax.text(v, -0.42, lab, ha="center", va="top", fontsize=15, color=c if big else INK, linespacing=1.3)
 ax.annotate("", xy=(3000, 0.95), xytext=(750, 0.95),
             arrowprops=dict(arrowstyle="->", color=AMBER, lw=2))
 ax.text(1500, 1.05, "통상 최저의 4배", ha="center", fontsize=15, color=AMBER, fontweight="bold")
@@ -76,7 +77,7 @@ fig, ax = plt.subplots(figsize=(5, 5))
 ax.pie([claimed, total - claimed], colors=[GREEN, "#E5E7EB"], startangle=90, counterclock=False,
        wedgeprops=dict(width=0.28, edgecolor="white", linewidth=2))
 ax.text(0, 0.1, f"{claimed/total*100:.1f}%", ha="center", va="center", fontsize=40, fontweight="bold", color=INK)
-ax.text(0, -0.22, f"{claimed:,} / {total:,}건", ha="center", va="center", fontsize=14, color=MUTED)
+ax.text(0, -0.22, f"{claimed:,} / {total:,}건", ha="center", va="center", fontsize=15, color=INK)
 ax.set(aspect="equal")
 save(fig, "chart_claims.png")
 
