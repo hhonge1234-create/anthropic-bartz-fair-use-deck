@@ -129,6 +129,7 @@ ol.steps li b{color:var(--ink)}
 .limit p{font-size:29px;line-height:1.6;color:var(--sub)}
 .arrow{font-size:60px;color:var(--sec);font-weight:900;display:flex;align-items:center}
 .vs .card ul{gap:22px;margin-top:10px}.vs .card li{font-size:30px}
+.s-train .quote{font-size:31px;padding:26px 40px}.s-train .mt{margin-top:26px}.s-train .card{padding:24px 26px}.s-train .card h3{font-size:29px;margin-bottom:8px}.s-train .card p{font-size:23px;line-height:1.5}.s-train .pill{margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -320,7 +321,7 @@ ol.steps li b{color:var(--ink)}
   <div class="src">출처: Order on Fair Use pp. 11–31 · 이주연(2025) Ⅲ.2 표</div>
 </section>
 
-<section class="slide sec3" data-anim="stagger">
+<section class="slide sec3 s-train" data-anim="stagger">
   <div class="kicker">3. 판단의 흐름 · ① 학습</div>
   <h2>학습이 공정이용인 이유: “작가를 꿈꾸는 독자처럼”</h2>
   <div class="quote mt a-s">책을 처음 손에 넣을 때 값을 치를 수는 있다. 그러나 읽을 때마다, 떠올릴 때마다, 그것을 바탕으로 새 글을 쓸 때마다 돈을 내라는 것은 상상할 수 없다.<small>— 알섭 판사, Order on Fair Use p. 12 (요지)</small></div>
@@ -330,6 +331,7 @@ ol.steps li b{color:var(--ink)}
     <div class="card a-s" style="flex:1"><span class="pill p-gray">논거 3</span><h3>생성형 AI는 다르다</h3><p>판례 검색 AI 사건(Ross)은 경쟁 검색 도구를 만든 것이라 변형적이지 않았다. 새 글을 쓰는 <b>생성형 AI</b>는 다르다.</p></div>
     <div class="card a-s" style="flex:1"><span class="pill p-gray">논거 4</span><h3>경쟁작 증가는 별개</h3><p>“AI가 경쟁작을 쏟아낸다”는 주장은 “아이들에게 글쓰기를 가르치면 경쟁작이 는다”는 불평과 같다고 봤다.</p></div>
   </div>
+  <div class="card c-blue a-s" style="margin-top:24px;padding:22px 32px"><p><b>제3요소의 논리</b> — 중요한 것은 복제 과정에서 쓴 양이 아니라, 그 복제로 <b>공중에게 접근 가능해진 양</b>이 원작을 대체할 수 있느냐다. 클로드는 책을 내놓지 않았으므로 책 전체를 복제한 것도 “합리적으로 필요”했다.</p></div>
   <div class="src">출처: Order on Fair Use pp. 11–14, 25–29</div>
 </section>
 
@@ -460,9 +462,9 @@ ol.steps li b{color:var(--ink)}
         <li><b>원고</b>: 작가 13명 · 최소 666권</li>
         <li><b>데이터</b>: LibGen·Anna's Archive 해적판을 <b>토렌트</b>로 받음</li>
         <li><b>판단 방식</b>: 취득부터 학습까지 <b>하나로 묶어</b> 심사</li>
-        <li><b>해적판</b>: 최종 목적이 변형적이면 <span class="green"><b>다운로드도 변형적</b></span></li>
+        <li><b>해적판</b>: 최종 목적이 변형적이면 <span class="green"><b>다운로드도 변형적</b></span>. 최소한만 복제해야 한다는 요건도 없다</li>
         <li><b>시장 희석</b>: <span class="amber"><b>가장 유력한 피해</b></span>. 이번엔 증거 부족</li>
-        <li><b>결과</b>: 공정이용 — <b>단, 이 원고들에 한해</b></li>
+        <li><b>결과</b>: <b>증명책임 원칙</b>에 따라 원고 신청 기각, 메타 신청 인용 → 공정이용 (이 원고들에 한해)</li>
       </ul>
     </div>
   </div>
@@ -478,11 +480,11 @@ ol.steps li b{color:var(--ink)}
     <tr><th style="width:22%">비교 항목</th><th style="width:38%">앤트로픽 사건 (알섭 판사)</th><th>메타 사건 (차브리아 판사)</th></tr>
     <tr class="hl"><td>판단 구조</td><td><b>행위별로 쪼개어</b> 판단</td><td>취득부터 학습까지 <b>하나로 묶어</b> 판단</td></tr>
     <tr><td>제1요소: 학습</td><td class="green">+ 본질적으로 변형적</td><td class="green">+ 혁신적 도구 (단, 사람의 독서와는 다름)</td></tr>
-    <tr class="hl"><td>제1요소: 해적판</td><td class="red">− 학습과 별개의 비변형적 이용</td><td class="green">최종 이용이 변형적이면 다운로드도 변형적</td></tr>
+    <tr class="hl"><td>제1요소: 해적판</td><td class="red">− 학습과 별개의 비변형적 이용</td><td class="green">최종 이용이 변형적이면 다운로드도 변형적 (최소 복제 요건 없음)</td></tr>
     <tr><td>제2·3요소</td><td>− 표현적 저작물 / + 전체 복제는 합리적</td><td>− 고도로 표현적 / + 같음</td></tr>
     <tr><td>제4요소: 라이선스 시장</td><td>인정 안 함</td><td>인정 안 함 (인정하면 순환논리)</td></tr>
     <tr class="hl"><td>제4요소: 시장 희석</td><td><b>고려 대상 아님</b></td><td><b class="amber">고려 대상</b> — 다만 이 사건은 증거 부족</td></tr>
-    <tr><td>결론</td><td>학습·디지털화 ✔ / 해적판 ✖ → 15억 달러 합의</td><td>전체 공정이용 (이 원고들에 한해)</td></tr>
+    <tr><td>결론</td><td>학습·디지털화 ✔ / 해적판 ✖ → 15억 달러 합의</td><td>증명책임 원칙에 따라 메타 신청 인용 → 공정이용 (이 원고들에 한해)</td></tr>
   </table>
   </div>
   <div class="src">출처: 이주연(2025) Ⅲ.4</div>
@@ -497,7 +499,7 @@ ol.steps li b{color:var(--ink)}
     <div class="theory a-s"><span class="pill p-gray" style="align-self:flex-start">이론 ②</span><h3>학습용 라이선스 시장 훼손</h3><p>무단 학습 때문에 ‘AI 학습용 라이선스’라는 새 시장이 망가진다. 그러나 이를 인정하면 어떤 이용이든 “라이선스를 받았어야 한다”고 할 수 있어 저작권자가 항상 이긴다.</p><div class="r" style="background:var(--red-bg);color:var(--red)">✖ 순환논리 → 변형적 이용의 라이선스료 상실은 손해 아님</div></div>
     <div class="theory a-s c-amber" style="border-width:2.5px"><span class="pill p-amber" style="align-self:flex-start">이론 ③</span><h3>시장 희석</h3><p>같은 주제·장르의 AI 작품이 쏟아져 원작을 <b>간접적으로 대체</b>한다. 사람이 쓴 로맨스 소설 대신 AI 로맨스 소설을 사는 경우다.</p><div class="r" style="background:#fff;color:var(--amber)">△ 주장 자체는 유효, 원고는 추측만 제시</div></div>
   </div>
-  <div class="card c-soft a-s" style="margin-top:28px"><p>희석 피해는 모두에게 같지 않다. 유명 작가보다 <b>신진 작가</b>가, 소설보다 뉴스·논픽션 같은 <b>기능적 저작물</b>이 더 쉽게 대체된다.</p></div>
+  <div class="card c-soft a-s" style="margin-top:28px"><p>희석 피해는 모두에게 같지 않다. 유명 작가보다 <b>신진 작가</b>가, 소설보다 뉴스·논픽션 같은 <b>기능적 저작물</b>이 더 쉽게 대체된다. 비교 기준은 ‘LLM이 없는 세상’이 아니라 <b>‘저작권 있는 책으로 학습하지 않은 LLM이 있는 세상’</b>이다.</p></div>
   <div class="src">출처: 이주연(2025) Ⅲ.3 · 세종 뉴스레터</div>
 </section>
 
