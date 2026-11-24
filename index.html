@@ -200,6 +200,21 @@ tr.hl td:first-child{color:var(--navy)}
 .matrix .p i{background:var(--navy)!important}.matrix .m i{background:var(--red)!important}.matrix .z i{background:#6B7280!important}
 .matrix .res,.concl{border-width:2.5px!important}
 .verdict .v{border-top:2px dashed #B9C3D8}
+
+.fx.big .fc{padding:28px 26px;gap:14px}
+.fx.big .fc .ft{font-size:30px}
+.fx.big .fc .fk{font-size:21px}
+.fx.big .fc li{font-size:25px;line-height:1.5}
+
+.fx.big{flex:1;min-height:0;align-items:stretch}
+.fx.big .fc{padding:34px 30px;gap:18px;justify-content:flex-start}
+.fx.big .fc .fh{gap:16px}
+.fx.big .fc .sg{width:58px!important;height:58px!important;font-size:38px!important}
+.fx.big .fc .fk{font-size:23px}
+.fx.big .fc .ft{font-size:36px}
+.fx.big .fc ul{gap:14px;margin-top:10px}
+.fx.big .fc li{font-size:29px;line-height:1.5;padding-left:22px}
+.concl{font-size:29px}.concl small{font-size:23px}
 </style>
 </head>
 <body>
@@ -393,24 +408,25 @@ tr.hl td:first-child{color:var(--navy)}
 <section class="slide sec3" data-anim="stagger">
   <div class="kicker">3. 판단의 흐름 · ① 클로드 훈련에 이용된 사본</div>
   <h2>학습은 공정이용: 네 요소 중 셋이 유리했다</h2>
-  <div class="fx g2" style="margin-top:26px">
-    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제1요소 · 목적과 성격</div><div class="ft">본질적으로 변형적이다</div></div></div><ul><li>새 텍스트를 생성하도록 LLM을 훈련시키는 이용은 <b>본질적으로 변형적</b>(quintessentially transformative)이다. LLM은 우리 생애 <b>가장 변형적인 기술</b> 중 하나다.</li><li>작가들은 “사람을 읽고 쓰게 가르치는 것과 같으니 막을 수 있다”고 했지만, 누구도 남의 배움을 금지할 수 없다. 처음 책을 구할 때 값을 낼 수는 있어도 <b>읽고, 떠올리고, 새 글을 쓸 때마다</b> 대가를 내라는 것은 상정하기 어렵다.</li></ul></div>
-    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제3요소 · 이용된 양</div><div class="ft">전체 복제도 합리적으로 필요했다</div></div></div><ul><li>중요한 것은 복제한 양 자체가 아니라, 그 복제로 <b>공중에게 접근 가능해진 양</b>이 원작을 대체할 수 있느냐다.</li><li>LLM 훈련에 필요한 텍스트는 막대하므로 책 전체를 복제한 것은 <b>‘합리적으로’ 필요</b>했다.</li></ul></div>
-    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제2요소 · 저작물의 성격</div><div class="ft">표현적 저작물이다</div></div></div><ul><li>원고들의 책은 <b>표현적 요소</b>를 포함한다.</li></ul></div>
-    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제4요소 · 시장 영향</div><div class="ft">원작 시장을 대체하지 않았다</div></div></div><ul><li>원고들도 침해물이 공중에 제공되지 않았음을 인정했다(제공되면 <b>별도 소송</b> 가능). 경쟁작이 폭증한다는 주장은 “아이들에게 글쓰기를 가르치면 경쟁작이 는다”는 불평과 같고, 저작권법은 <b>저자를 경쟁으로부터 보호하지 않는다</b>.</li><li>학습용 라이선스 시장이 생길 가능성은 있으나, <b>저작권법이 저작자에게 보장하는 시장은 아니다</b>.</li></ul></div>
+  <p class="lead">핵심은 제1요소다. 새 글을 쓰는 능력을 만드는 학습은 <b>“본질적으로 변형적”</b>이라고 봤다.</p>
+  <div class="fx g4 big mt">
+    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제1요소 · 목적</div><div class="ft">본질적으로 변형적</div></div></div><ul><li>새 글을 생성하는 능력을 만드는 이용</li><li>배울 때마다 대가를 내라는 건 <b>상정하기 어렵다</b></li></ul></div>
+    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제2요소 · 성격</div><div class="ft">표현적 저작물</div></div></div><ul><li>표현이 풍부한 책이라 <b>불리</b></li></ul></div>
+    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제3요소 · 양</div><div class="ft">전체 복제도 합리적</div></div></div><ul><li>기준은 복제량이 아니라 <b>공중에 드러난 양</b></li><li>LLM엔 막대한 텍스트가 필요</li></ul></div>
+    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제4요소 · 시장</div><div class="ft">원작을 대체하지 않음</div></div></div><ul><li>침해 출력이 <b>없었다</b></li><li>경쟁작 증가·학습용 라이선스 시장은 <b>보호 대상 아님</b></li></ul></div>
   </div>
-  <div class="concl a-s" style="background:var(--green)">결론 · LLM 훈련 목적의 이용은 공정이용 → 앤트로픽의 약식판결 신청 인용<small>단, 범용 도서관에 있으나 LLM 훈련에 쓰이지 않은 사본은 판단이 어느 쪽으로도 가능해 약식판결 범위에서 제외</small></div>
-  <div class="src">출처: 이주연(2025) Ⅲ.2 표 “클로드 훈련에 이용된 사본” · Order on Fair Use pp. 11–14, 25–29, 31 &nbsp;(+ 유리 · − 불리)</div>
+  <div class="concl a-s" style="background:var(--green)">결론 · 공정이용 → 앤트로픽의 약식판결 신청 인용<small>단, 학습에 쓰이지 않은 도서관 사본은 판단에서 제외</small></div>
+  <div class="src">출처: 이주연(2025) Ⅲ.2 표 “클로드 훈련에 이용된 사본” · Order on Fair Use pp. 11–14, 25–29, 31</div>
 </section>
 
 <section class="slide sec3" data-anim="stagger">
   <div class="kicker">3. 판단의 흐름 · ② 구입한 종이책의 디지털화</div>
   <h2>디지털화도 공정이용: 형식만 바꿨을 뿐 사본이 늘지 않았다</h2>
-  <div class="fx g4" style="margin-top:26px">
-    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제1요소 · 목적과 성격</div><div class="ft">변형적 이용</div></div></div><ul><li><b>공간 절약과 검색 가능성</b>을 위해 인쇄본을 디지털 파일로 바꾼 행위 자체가 변형적 이용이다.</li></ul><div class="nt">※ 단순한 매체 변경은 변형적이 아니라는 반론도 있으나, 외부 유출 목적이 없으면 시장 대체가 없어 결론은 유지된다(이주연).</div></div>
-    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제2요소 · 저작물의 성격</div><div class="ft">표현적 저작물</div></div></div><ul><li>원고들의 책은 <b>표현적 요소</b>를 포함한다.</li></ul></div>
-    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제3요소 · 이용된 양</div><div class="ft">전체 복제가 불가피</div></div></div><ul><li>같은 사본을 저장하려면 <b>전체 복제가 불가피</b>했다.</li><li>종이책은 <b>파기</b>되었고 잉여 복제는 없었다.</li></ul></div>
-    <div class="fc neu a-s"><div class="fh"><div class="sg">·</div><div><div class="fk">제4요소 · 시장 영향</div><div class="ft">중립</div></div></div><ul><li>앤트로픽은 <b>외부 배포 의도가 없었고</b>, 디지털 파일이 실제로 배포된 사실도 없다.</li></ul></div>
+  <div class="fx g4 big" style="margin-top:30px">
+    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제1요소 · 목적</div><div class="ft">변형적 이용</div></div></div><ul><li><b>공간 절약·검색</b>을 위한 형식 변경</li></ul></div>
+    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제2요소 · 성격</div><div class="ft">표현적 저작물</div></div></div><ul><li>표현이 풍부한 책이라 <b>불리</b></li></ul></div>
+    <div class="fc pos a-s"><div class="fh"><div class="sg">+</div><div><div class="fk">제3요소 · 양</div><div class="ft">전체 복제 불가피</div></div></div><ul><li>원본은 <b>파기</b>, 남는 사본 없음</li></ul></div>
+    <div class="fc neu a-s"><div class="fh"><div class="sg">·</div><div><div class="fk">제4요소 · 시장</div><div class="ft">중립</div></div></div><ul><li>외부 <b>배포 없음</b></li></ul></div>
   </div>
   <div class="copies" style="margin-top:22px">
     <div class="copy a-s"><div class="nm">Texaco</div><div class="delta amber">+1</div><p>학술지 복사<br>사본이 늘었다</p></div>
@@ -419,26 +435,26 @@ tr.hl td:first-child{color:var(--navy)}
     <div class="copy a-s c-green" style="border-width:2.5px"><div class="nm">앤트로픽</div><div class="delta green">±0</div><p>스캔 후 종이 원본 폐기<br><b>외부 배포 없음</b></p></div>
     <div class="copy a-s c-red"><div class="nm">Napster</div><div class="delta red" style="font-size:46px;padding:6px 0">수백만</div><p>파일 공유<br>공정이용 부정</p></div>
   </div>
-  <div class="concl a-s" style="background:var(--green)">결론 · 앤트로픽의 약식판결 신청 인용 (공정이용)<small>근거는 ‘학습의 일부’가 아니라 ‘종이를 디지털로 바꿨을 뿐’이라는 더 좁은 이유</small></div>
-  <div class="src">출처: 이주연(2025) Ⅲ.2 표 “구입한 종이책의 디지털화”, 각주 81 · Order on Fair Use pp. 14–17, 29 &nbsp;(+ 유리 · − 불리 · · 중립)</div>
+  <div class="concl a-s" style="background:var(--green)">결론 · 공정이용 → 앤트로픽의 약식판결 신청 인용</div>
+  <div class="src">출처: 이주연(2025) Ⅲ.2 표 “구입한 종이책의 디지털화” · Order on Fair Use pp. 14–17, 29</div>
 </section>
 
 <section class="slide sec3" data-anim="stagger">
   <div class="kicker">3. 판단의 흐름 · ③ 무단 복제된 도서관 사본 (1/2)</div>
   <h2>해적판 도서관은 공정이용이 아니다: 네 요소 모두 불리</h2>
-  <p class="lead" style="margin-top:10px">출발점은 제1요소다. 법원은 해적판 다운로드의 목적이 ‘학습’이 아니라 <b>‘범용 도서관 구축’</b>이라고 봤다. 그래서 학습의 변형성을 빌려 올 수 없었다.</p>
-  <div class="fx g4" style="margin-top:22px">
-    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제1요소 · 목적과 성격</div><div class="ft">범용 도서관 구축</div></div></div><ul><li>해적판 책을 다운로드한 행위의 목적은 <b>범용적 도서관 구축</b>에 있다.</li><li>앤트로픽은 “결국 LLM 훈련 목적”이라 주장했으나, 판사는 LLM 훈련은 <b>추가적 목적 중 하나</b>일 뿐이라며 배척했다.</li></ul></div>
-    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제2요소 · 저작물의 성격</div><div class="ft">표현적 저작물</div></div></div><ul><li>원고들의 책은 <b>표현적 요소</b>를 포함한다.</li></ul></div>
-    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제3요소 · 이용된 양</div><div class="ft">수백만 권 통째로</div></div></div><ul><li>앤트로픽은 <b>수백만 권의 책의 전부</b>를 복제하였다.</li></ul></div>
-    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제4요소 · 시장 영향</div><div class="ft">수요를 그대로 대체</div></div></div><ul><li>해당 행위는 원고들 책에 대한 수요를 <b>copy for copy</b>(한 권 대 한 권)로 대체한다.</li></ul></div>
+  <p class="lead">핵심은 제1요소다. 목적이 ‘학습’이 아니라 <b>‘범용 도서관 구축’</b>이라 학습의 변형성을 빌려 올 수 없었다.</p>
+  <div class="fx g4 big mt">
+    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제1요소 · 목적</div><div class="ft">범용 도서관 구축</div></div></div><ul><li>“결국 학습용” 주장은 배척</li><li>학습은 <b>추가 목적</b>일 뿐</li></ul></div>
+    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제2요소 · 성격</div><div class="ft">표현적 저작물</div></div></div><ul><li>표현이 풍부한 책이라 <b>불리</b></li></ul></div>
+    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제3요소 · 양</div><div class="ft">수백만 권 통째로</div></div></div><ul><li>책 <b>전부</b>를 복제</li></ul></div>
+    <div class="fc neg a-s"><div class="fh"><div class="sg">−</div><div><div class="fk">제4요소 · 시장</div><div class="ft">수요를 그대로 대체</div></div></div><ul><li><b>한 권 대 한 권</b>(copy for copy)</li></ul></div>
   </div>
-  <div class="concl a-s" style="background:var(--red)">결론 · 앤트로픽의 약식판결 신청 기각<small>해적판으로 중앙 도서관을 구축한 행위와 그 손해는 정식재판(trial)에서 판단 → 사건의 초점이 학습에서 해적본의 취득·저장으로 이동</small></div>
-  <div class="row" style="margin-top:18px">
-    <div class="card c-red a-s" style="flex:1"><h3>살 수 있는 책이었다</h3><p>서점에서 살 수 있는 책을 해적판으로 받는 것은 서평이든 연구든 AI 개발이든 “합리적으로 필요”했던 적이 없다. 판사는 이를 <b>“본질적으로, 돌이킬 수 없이 침해”</b>라고 했다. 실제로 앤트로픽은 나중에 책을 샀다.</p></div>
-    <div class="card a-s" style="flex:1"><h3>허용하면 시장이 무너진다</h3><p>앤트로픽 측 변론: <b>“연구 목적이라고 스스로 축복하고 아무 교과서나 가져갈 수는 없다. 그러면 출판 시장이 무너진다.”</b> 판사는 이 말을 그대로 인용했다.</p></div>
-    </div>
-  <div class="src">출처: 이주연(2025) Ⅲ.2 표 “무단 복제된 도서관 사본”, 각주 75·79·80 · Order on Fair Use pp. 18–24, 29–32 &nbsp;(− 불리)</div>
+  <div class="concl a-s" style="background:var(--red)">결론 · 앤트로픽의 약식판결 신청 기각 → 정식재판으로<small>사건의 초점이 학습에서 해적판의 취득·보관으로 이동</small></div>
+  <div class="row" style="margin-top:20px">
+    <div class="card a-s" style="flex:1;padding:22px 30px"><h3 style="font-size:28px;margin-bottom:6px">살 수 있는 책이었다</h3><p>살 수 있는 책을 해적판으로 받는 것은 <b>“본질적으로, 돌이킬 수 없이 침해”</b></p></div>
+    <div class="card a-s" style="flex:1;padding:22px 30px"><h3 style="font-size:28px;margin-bottom:6px">허용하면 시장이 무너진다</h3><p><b>“연구 목적이라고 스스로 축복할 수는 없다”</b> (앤트로픽 측 변론 인용)</p></div>
+  </div>
+  <div class="src">출처: 이주연(2025) Ⅲ.2 표 “무단 복제된 도서관 사본”, 각주 75·80 · Order on Fair Use pp. 18–24, 29–32</div>
 </section>
 
 <section class="slide sec3" data-anim="split">
