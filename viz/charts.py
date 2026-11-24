@@ -18,7 +18,7 @@ plt.rcParams.update({
     "axes.edgecolor": "#D1D5DB", "font.size": 15,
 })
 INK, MUTED, GRID = "#111827", "#4B5563", "#E5E7EB"
-RED, GREEN, AMBER, BLUE = "#DC2626", "#059669", "#D97706", "#2563EB"
+RED, GREEN, AMBER, BLUE = "#B91C1C", "#1E3A8A", "#1E3A8A", "#6B7280"
 
 
 def save(fig, name):
@@ -39,7 +39,7 @@ rows = [("Books3\n2021년 1~2월", 196_640, "196,640권"),
 labels = [r[0] for r in rows][::-1]
 vals = [r[1] for r in rows][::-1]
 txt = [r[2] for r in rows][::-1]
-bars = ax.barh(labels, vals, color=RED, height=0.56)
+bars = ax.barh(labels, vals, color="#1E3A8A", height=0.56)
 for b, t in zip(bars, txt):
     ax.text(b.get_width() + 80_000, b.get_y() + b.get_height() / 2, t,
             va="center", fontsize=17, fontweight="bold", color=INK)
@@ -83,7 +83,7 @@ save(fig, "chart_claims.png")
 
 # D. Attorney fees: request -> reduced request -> award (Final Approval Order pp. 14-15, 22)
 fig, ax = plt.subplots(figsize=(9, 4.6))
-steps = [("최초 요청\n(20%)", 300_000_000, "#9CA3AF"), ("수정 요청\n(12.5%)", 187_500_000, AMBER),
+steps = [("최초 요청\n(20%)", 300_000_000, "#9CA3AF"), ("수정 요청\n(12.5%)", 187_500_000, "#6B7280"),
          ("법원 인정\n(약 6.8%)", 101_561_111, GREEN)]
 x = range(len(steps))
 bars = ax.bar(x, [s[1] for s in steps], color=[s[2] for s in steps], width=0.56)

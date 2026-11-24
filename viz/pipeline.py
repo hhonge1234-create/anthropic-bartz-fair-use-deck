@@ -2,7 +2,7 @@
 from manim import *
 
 BG, INK, MUTED = "#FFFFFF", "#111827", "#4B5563"
-RED, GREEN, AMBER, BLUE = "#DC2626", "#059669", "#D97706", "#2563EB"
+RED, GREEN, AMBER, BLUE = "#B91C1C", "#1E3A8A", "#1E3A8A", "#6B7280"
 FONT = "Apple SD Gothic Neo"
 config.background_color = BG
 
@@ -12,8 +12,8 @@ def T(s, size=30, color=INK, weight=NORMAL):
 
 
 def box(title, sub, color, w=2.7, h=1.5):
-    r = RoundedRectangle(corner_radius=0.15, width=w, height=h, stroke_color=color, stroke_width=4,
-                         fill_color=color, fill_opacity=0.10)
+    r = RoundedRectangle(corner_radius=0.15, width=w, height=h, stroke_color=color, stroke_width=3,
+                         fill_color=BG, fill_opacity=1)
     t = T(title, 28, INK, BOLD)
     s = T(sub, 20, MUTED)
     VGroup(t, s).arrange(DOWN, buff=0.16).move_to(r)

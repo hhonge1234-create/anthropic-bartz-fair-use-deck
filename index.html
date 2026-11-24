@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{
-  --page:#EEF1F6; --bg:#FFFFFF; --soft:#F6F8FB; --line:#E3E7EE;
+  --page:#EEF1F6; --bg:#FFFFFF; --soft:#FFFFFF; --line:#E5E7EB;
   --ink:#111827; --sub:#374151; --muted:#6B7280;
-  --red:#DC2626; --red-bg:#FEF2F2; --red-line:#FCA5A5;
-  --green:#059669; --green-bg:#ECFDF5; --green-line:#6EE7B7;
-  --amber:#B45309; --amber-bg:#FFFBEB; --amber-line:#FCD34D;
-  --blue:#1D4ED8; --blue-bg:#EFF6FF; --blue-line:#93C5FD;
-  --navy:#1E293B;
-  --shadow:0 2px 4px rgba(17,24,39,.04),0 8px 24px rgba(17,24,39,.06);
+  --navy:#1E3A8A;
+  --red:#B91C1C; --red-bg:#FFFFFF; --red-line:#E5E7EB;
+  --green:#1E3A8A; --green-bg:#FFFFFF; --green-line:#E5E7EB;
+  --amber:#1E3A8A; --amber-bg:#FFFFFF; --amber-line:#E5E7EB;
+  --blue:#1E3A8A; --blue-bg:#FFFFFF; --blue-line:#E5E7EB;
+  --shadow:none;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--page);color:var(--ink);overflow:hidden;
@@ -23,8 +23,8 @@ html,body{height:100%;background:var(--page);color:var(--ink);overflow:hidden;
 #deck{position:relative;width:1920px;height:1080px;flex:none;transform-origin:center center;background:var(--bg);box-shadow:0 10px 40px rgba(17,24,39,.10)}
 .slide{position:absolute;inset:0;padding:84px 110px 96px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .3s ease}
 .slide.active{opacity:1;visibility:visible}
-.slide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--sec,#1D4ED8)}
-.sec1{--sec:#1D4ED8}.sec2{--sec:#7C3AED}.sec3{--sec:#B45309}.sec4{--sec:#0F766E}.sec5{--sec:#BE185D}.sec6{--sec:#334155}
+.slide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--sec,#1E3A8A)}
+.sec1{--sec:#1E3A8A}.sec2{--sec:#7C3AED}.sec3{--sec:#B45309}.sec4{--sec:#1E3A8A}.sec5{--sec:#BE185D}.sec6{--sec:#334155}
 .kicker{display:inline-flex;align-self:flex-start;align-items:center;gap:10px;font-size:24px;font-weight:700;color:var(--sec);background:color-mix(in srgb,var(--sec) 9%,white);padding:8px 18px;border-radius:999px;margin-bottom:20px}
 h1{font-size:92px;font-weight:800;line-height:1.15;letter-spacing:-.02em}
 h2{font-size:58px;font-weight:800;line-height:1.22;letter-spacing:-.015em}
@@ -46,7 +46,7 @@ h2{font-size:58px;font-weight:800;line-height:1.22;letter-spacing:-.015em}
 .c-soft{background:var(--soft);box-shadow:none}
 .red{color:var(--red)!important}.green{color:var(--green)!important}.amber{color:var(--amber)!important}.blue{color:var(--blue)!important}
 .pill{display:inline-block;font-size:22px;font-weight:800;padding:6px 16px;border-radius:999px;margin-bottom:14px}
-.p-red{background:var(--red);color:#fff}.p-green{background:var(--green);color:#fff}.p-amber{background:#D97706;color:#fff}.p-blue{background:var(--blue);color:#fff}.p-gray{background:#E5E7EB;color:var(--sub)}
+.p-red{background:var(--red);color:#fff}.p-green{background:var(--green);color:#fff}.p-amber{background:#1E3A8A;color:#fff}.p-blue{background:var(--blue);color:#fff}.p-gray{background:#E5E7EB;color:var(--sub)}
 .src{position:absolute;left:110px;bottom:36px;font-size:19px;color:var(--muted)}
 .quote{background:var(--soft);border-radius:22px;padding:34px 44px;font-size:36px;line-height:1.55;font-weight:700;color:var(--ink);position:relative}
 .quote::before{content:"“";position:absolute;left:18px;top:-6px;font-size:110px;color:var(--sec);opacity:.35;font-family:Georgia,serif}
@@ -56,10 +56,10 @@ th,td{padding:15px 22px;text-align:left;vertical-align:top;border-bottom:1px sol
 tr:last-child td{border-bottom:none}
 th{font-size:23px;color:#fff;font-weight:700;background:var(--navy)}
 td:first-child{font-weight:800;color:var(--ink);background:var(--soft)}
-tr.hl td{background:#FFFBEB}tr.hl td:first-child{background:#FEF3C7}
+tr.hl td{background:#FFFFFF}tr.hl td:first-child{background:#FFFFFF}
 img.chart{display:block;max-width:100%;max-height:100%;object-fit:contain}
 .num{font-variant-numeric:tabular-nums}
-#bar{position:fixed;left:0;bottom:0;height:5px;background:#1D4ED8;transition:width .3s ease;z-index:5}
+#bar{position:fixed;left:0;bottom:0;height:5px;background:#1E3A8A;transition:width .3s ease;z-index:5}
 #count{position:fixed;right:22px;bottom:14px;font-size:14px;color:var(--muted);z-index:5;font-variant-numeric:tabular-nums}
 #nav{position:fixed;right:18px;bottom:40px;display:flex;gap:8px;z-index:5;opacity:0;transition:opacity .2s}
 body:hover #nav{opacity:.95}
@@ -82,7 +82,7 @@ body:hover #nav{opacity:.95}
 .tl .ev .dot{position:absolute;top:105px;left:50%;margin-left:-18px;width:36px;height:36px;border-radius:50%;border:6px solid #fff;box-shadow:0 0 0 2px #CBD5E1}
 .tl .ev .t{position:absolute;top:172px;left:4px;right:4px;font-size:23px;line-height:1.45;color:var(--sub);background:var(--soft);border-radius:16px;padding:16px 12px;border:1.5px solid var(--line)}
 .tl .ev .t b{color:var(--ink);display:block;font-size:26px;margin-bottom:6px}
-.tl .ev.key .t{background:var(--amber-bg);border:2px solid #D97706}
+.tl .ev.key .t{background:var(--amber-bg);border:2px solid #1E3A8A}
 .factors{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
 .factor{background:#fff;border:1.5px solid var(--line);border-radius:22px;padding:30px 28px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);border-top:8px solid var(--sec)}
 .factor .k{font-size:23px;font-weight:800;color:var(--sec)}
@@ -147,6 +147,48 @@ ol.steps li b{color:var(--ink)}
 .fc.neu{background:var(--soft)}.fc.neu .sg{background:#9CA3AF}
 .concl{border-radius:16px;padding:16px 28px;color:#fff;font-size:25px;font-weight:800;line-height:1.45;margin-top:18px}
 .concl small{display:block;font-size:20px;font-weight:600;opacity:.92;margin-top:2px}
+
+/* ===== minimal theme overrides ===== */
+.slide::before{display:none}
+.sec1,.sec2,.sec3,.sec4,.sec5,.sec6{--sec:#1E3A8A}
+.kicker{background:none!important;padding:0!important;font-size:22px;letter-spacing:.02em;color:var(--navy)!important;margin-bottom:14px}
+.title-slide{background:#fff!important}
+.title-slide .chips span{border-color:var(--line)}
+.card,.verdict,.factor,.theory,.stat,.copy,.blob,.limit,.fc,.quote,.tl .ev .t,.matrix .rh,.matrix .c{background:#fff!important;box-shadow:none!important;border:1.5px solid var(--line)!important}
+.factor,.stat{border-top:1.5px solid var(--line)!important}
+.card[style*="border-top"]{border-top:1.5px solid var(--line)!important}
+.pill,.p-red,.p-green,.p-amber,.p-blue,.p-gray,.pill[style]{background:none!important;border:1.5px solid currentColor;color:var(--navy)!important;padding:4px 14px!important}
+.p-red{color:var(--red)!important}.p-gray{color:var(--muted)!important}
+.limit .no{background:none!important;color:var(--navy);border:1.5px solid var(--navy)}
+ol.steps li::before{background:none!important;color:var(--navy);border:1.5px solid var(--navy)}
+.card li::before{background:var(--ink)}
+.quote::before{display:none}
+.quote{border-left:1.5px solid var(--line)!important}
+th{background:#fff!important;color:var(--ink)!important;border-bottom:2px solid var(--ink)!important}
+td:first-child{background:#fff!important}
+tr.hl td{background:#fff!important;font-weight:700;color:var(--ink)}
+tr.hl td:first-child{color:var(--navy)}
+.matrix .h{background:#fff!important;color:var(--ink)!important;border-bottom:2px solid var(--ink);border-radius:0}
+.matrix .c i{background:none!important;width:auto;height:auto;font-size:28px}
+.matrix .p i{color:var(--navy)}.matrix .m i{color:var(--red)}.matrix .z i{color:var(--muted)}
+.matrix .res{background:#fff!important;color:var(--navy)!important;border:1.5px solid var(--navy)!important}
+.matrix .res[style*="--red"]{color:var(--red)!important;border-color:var(--red)!important}
+.fc .sg{background:none!important;width:auto;height:auto;font-size:32px}
+.fc.pos .sg{color:var(--navy)}.fc.neg .sg{color:var(--red)}.fc.neu .sg{color:var(--muted)}
+.concl{background:#fff!important;color:var(--navy)!important;border:1.5px solid var(--navy)}
+.concl[style*="--red"]{color:var(--red)!important;border-color:var(--red)}
+.concl small{color:var(--sub);opacity:1}
+.theory .r{background:#fff!important;border:1.5px solid var(--line);padding:12px 16px}
+.verdict .v{border-top:1.5px dashed var(--line)}
+.tl .axis{background:#D1D5DB}
+.tl .ev .dot{background:#9CA3AF!important;box-shadow:0 0 0 2px #D1D5DB}
+.tl .ev.key .dot{background:var(--navy)!important}
+.tl .ev.key .t{border-color:var(--navy)!important}
+.tl .ev .t[style]{border-color:var(--line)!important}
+.tl .ev .d.green,.tl .ev .d.amber{color:var(--navy)!important}
+#bar{background:var(--navy)}
+.arrow{color:var(--navy)}
+.copy .delta.amber{color:var(--ink)!important}
 </style>
 </head>
 <body>
@@ -249,13 +291,13 @@ ol.steps li b{color:var(--ink)}
   <p class="lead">핵심은 <b>2025년 6월 23일 판결</b>이다. 해적판 부분이 배심 재판으로 넘어가자, 앤트로픽은 재판 대신 합의를 택했다.</p>
   <div class="tl">
     <div class="axis"></div>
-    <div class="ev" style="left:7%"><div class="d">2024.8</div><div class="dot" style="background:#94A3B8"></div><div class="t"><b>집단소송 제기</b>작가 3명</div></div>
-    <div class="ev" style="left:21.3%"><div class="d">2025.2</div><div class="dot" style="background:#94A3B8"></div><div class="t"><b>약식판결 신청</b>집단 인증보다 공정이용 판단을 먼저</div></div>
-    <div class="ev key" style="left:35.6%"><div class="d amber">2025.6.23</div><div class="dot" style="background:#D97706"></div><div class="t"><b>공정이용 판결</b>학습 ✔ 해적판 ✖<br>→ 재판 회부</div></div>
-    <div class="ev" style="left:50%"><div class="d">2025.8</div><div class="dot" style="background:#94A3B8"></div><div class="t"><b>합의 조건서 서명</b>15억 달러</div></div>
-    <div class="ev" style="left:64.3%"><div class="d">2025.10.17</div><div class="dot" style="background:#94A3B8"></div><div class="t"><b>합의 예비승인</b>저작권자에게 통지 시작</div></div>
-    <div class="ev" style="left:78.6%"><div class="d">2026.5.14</div><div class="dot" style="background:#94A3B8"></div><div class="t"><b>최종승인 심리</b>이의 54건 검토</div></div>
-    <div class="ev" style="left:93%"><div class="d green">2026.7.20</div><div class="dot" style="background:#059669"></div><div class="t" style="background:var(--green-bg);border-color:var(--green-line)"><b>최종승인 · 종결</b>재소 금지로 각하</div></div>
+    <div class="ev" style="left:7%"><div class="d">2024.8</div><div class="dot" style="background:#9CA3AF"></div><div class="t"><b>집단소송 제기</b>작가 3명</div></div>
+    <div class="ev" style="left:21.3%"><div class="d">2025.2</div><div class="dot" style="background:#9CA3AF"></div><div class="t"><b>약식판결 신청</b>집단 인증보다 공정이용 판단을 먼저</div></div>
+    <div class="ev key" style="left:35.6%"><div class="d amber">2025.6.23</div><div class="dot" style="background:#1E3A8A"></div><div class="t"><b>공정이용 판결</b>학습 ✔ 해적판 ✖<br>→ 재판 회부</div></div>
+    <div class="ev" style="left:50%"><div class="d">2025.8</div><div class="dot" style="background:#9CA3AF"></div><div class="t"><b>합의 조건서 서명</b>15억 달러</div></div>
+    <div class="ev" style="left:64.3%"><div class="d">2025.10.17</div><div class="dot" style="background:#9CA3AF"></div><div class="t"><b>합의 예비승인</b>저작권자에게 통지 시작</div></div>
+    <div class="ev" style="left:78.6%"><div class="d">2026.5.14</div><div class="dot" style="background:#9CA3AF"></div><div class="t"><b>최종승인 심리</b>이의 54건 검토</div></div>
+    <div class="ev" style="left:93%"><div class="d green">2026.7.20</div><div class="dot" style="background:#1E3A8A"></div><div class="t" style="background:var(--green-bg);border-color:var(--green-line)"><b>최종승인 · 종결</b>재소 금지로 각하</div></div>
   </div>
   <div class="src">출처: Order on Fair Use p. 8 · Final Approval Order pp. 1–6, 23</div>
 </section>
@@ -268,7 +310,7 @@ ol.steps li b{color:var(--ink)}
     <div class="factor a-s"><div class="k">제1요소</div><h3>이용의 목적과 성격</h3><div class="q">왜 썼는가?</div><p>원작과 다른 새 목적을 더한 <b>변형적 이용</b>이면 유리하다.</p><div class="ex">예: 구글 북스는 책 전체를 스캔했지만 ‘검색’이라는 새 목적으로 인정됐다</div></div>
     <div class="factor a-s"><div class="k">제2요소</div><h3>저작물의 성격</h3><div class="q">무엇을 썼는가?</div><p>사실·정보 중심이면 유리하고, 소설처럼 창작성이 높으면 불리하다.</p><div class="ex">이 사건: 원고의 책은 모두 표현이 풍부한 작품</div></div>
     <div class="factor a-s"><div class="k">제3요소</div><h3>이용된 양과 중요성</h3><div class="q">얼마나 썼는가?</div><p>목적에 비춰 필요한 만큼만 썼다면 유리하다. 전부 복제하면 원칙적으로 불리하다.</p><div class="ex">이 사건: 책을 통째로 복제</div></div>
-    <div class="factor a-s" style="border-top-color:#D97706;background:var(--amber-bg)"><div class="k amber">제4요소 · 가장 중요</div><h3>시장에 미치는 영향</h3><div class="q">원작 판매를 갉아먹는가?</div><p>원작을 살 사람이 대신 이것을 쓰게 되면 불리하다.</p><div class="ex">연방대법원: “의심의 여지 없이 가장 중요한 단일 요소” (1985)</div></div>
+    <div class="factor a-s" style="border-top-color:#1E3A8A;background:var(--amber-bg)"><div class="k amber">제4요소 · 가장 중요</div><h3>시장에 미치는 영향</h3><div class="q">원작 판매를 갉아먹는가?</div><p>원작을 살 사람이 대신 이것을 쓰게 되면 불리하다.</p><div class="ex">연방대법원: “의심의 여지 없이 가장 중요한 단일 요소” (1985)</div></div>
   </div>
   <div class="src">출처: 17 U.S.C. § 107 · 이주연(2025) Ⅲ.1</div>
 </section>
@@ -319,7 +361,7 @@ ol.steps li b{color:var(--ink)}
 <section class="slide sec3" data-anim="matrix">
   <div class="kicker">3. 판단의 흐름</div>
   <h2>세 가지 이용 × 4요소 판정표</h2>
-  <p class="lead">초록(+)은 공정이용에 유리, 빨강(−)은 불리, 회색(·)은 중립. 해적판 사본은 <b>네 요소 모두 불리</b>했다.</p>
+  <p class="lead">+는 공정이용에 유리, −(빨강)는 불리, ·는 중립. 해적판 사본은 <b>네 요소 모두 불리</b>했다.</p>
   <div class="matrix mt">
     <div></div>
     <div class="h" style="background:var(--green)">① 학습용 사본</div><div class="h" style="background:var(--green)">② 구매 도서 디지털화</div><div class="h" style="background:var(--red)">③ 해적판 도서관 사본</div>
@@ -492,8 +534,8 @@ ol.steps li b{color:var(--ink)}
       </ul>
     </div>
     <div class="arrow a-s" style="padding:0 22px;font-size:44px;color:var(--muted)">VS</div>
-    <div class="card a-s" style="flex:1;border-top:8px solid #0F766E">
-      <span class="pill" style="background:#0F766E;color:#fff">메타 · 차브리아 판사 · 2025. 6. 25.</span>
+    <div class="card a-s" style="flex:1;border-top:8px solid #1E3A8A">
+      <span class="pill" style="background:#1E3A8A;color:#fff">메타 · 차브리아 판사 · 2025. 6. 25.</span>
       <ul>
         <li><b>원고</b>: 작가 13명 · 최소 666권</li>
         <li><b>데이터</b>: LibGen·Anna's Archive 해적판을 <b>토렌트</b>로 받음</li>
@@ -510,7 +552,7 @@ ol.steps li b{color:var(--ink)}
 <section class="slide sec4" data-anim="stagger">
   <div class="kicker">4. 메타 사건과의 비교</div>
   <h2>4요소별로 보면: 갈린 곳은 ‘해적판’과 ‘시장 희석’</h2>
-  <p class="lead">노란 줄이 두 판사가 갈린 지점이다. 알섭 판사는 <b>데이터를 어떻게 구했는지</b>에, 차브리아 판사는 <b>AI 결과물이 시장을 잠식하는지</b>에 엄격했다.</p>
+  <p class="lead">굵게 표시한 줄이 두 판사가 갈린 지점이다. 알섭 판사는 <b>데이터를 어떻게 구했는지</b>에, 차브리아 판사는 <b>AI 결과물이 시장을 잠식하는지</b>에 엄격했다.</p>
   <div class="mt a-s">
   <table>
     <tr><th style="width:22%">비교 항목</th><th style="width:38%">앤트로픽 사건 (알섭 판사)</th><th>메타 사건 (차브리아 판사)</th></tr>
@@ -582,7 +624,7 @@ ol.steps li b{color:var(--ink)}
       <li><b>실질적 구제</b>: 15억 달러, 파일 폐기, 청구율 91.3%</li>
       <li><b>다음 쟁점의 지도</b>: 취득 경로 · 출력 · 시장 희석</li>
     </ul></div>
-    <div class="card a-s" style="flex:1;border-top:8px solid #D97706"><h3 class="amber">한국에 주는 시사점</h3><ul>
+    <div class="card a-s" style="flex:1;border-top:8px solid #1E3A8A"><h3 class="amber">한국에 주는 시사점</h3><ul>
       <li>제35조의5는 미국 §107이 모델이고 TDM 면책이 없다 → <b>판결이 직접 참고될 가능성</b></li>
       <li>‘웹스토리지’ 결정: 불법 파일임을 알고 받으면 사적 복제가 아니다 → <b>알섭 판사와 같은 방향</b></li>
       <li>방송 3사가 네이버를 상대로 뉴스 무단 학습 소송(2025. 1.) → <b>뉴스는 시장 희석에 취약</b></li>
